@@ -68,7 +68,8 @@
               "browserTarget": "privacare:build:production"
             },
             "development": {
-              "browserTarget": "privacare:build:development"
+              "browserTarget": "privacare:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
