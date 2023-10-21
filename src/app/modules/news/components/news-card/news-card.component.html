@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="news-card">
+    <div style="display: flex;flex-direction: row;justify-content: space-between; width: 100%">
+      <div class="news-card__creator-name">
+        @{{news.creatorFullName}}
+      </div>
+      <div class="news-card__date">
+        {{news.createdAt | date: 'dd/MM/yyyy - hh:mm'}}
+      </div>
+    </div>
+    <div class="news-card__title">
+      {{news.title}}
+    </div>
+    <p class="news-card__content">
+      {{news.content.length > contentLengthThreshold && !seeMore ?
+      (news.content | slice : 0 : contentLengthThreshold) + "..."
+      : news.content}}
+    </p>
+    <div class="news-card__button-group">
+      <button *ngIf="news.content.length > contentLengthThreshold && !seeMore" (click)="expandContent()"
+              class="news-card__button">
+        See more
+      </button>
+      <button *ngIf="seeMore" (click)="closeContent()" class="news-card__button">
+        Hide
+      </button>
+    </div>
+  </div>
+</div>
+
