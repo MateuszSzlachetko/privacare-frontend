@@ -1,10 +1,109 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+@use '@angular/material' as mat;
+
 
 $text: #3b3b3b;
 $background: #fcfcfc;
 $primary: #39dbb5;
 $secondary: #9afef7;
 $accent: #003a9e;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+$custom-primary-palette: (
+  50: #e7fbf6,
+  100: #c4f4e9,
+  200: #9cedda,
+  300: #74e6cb,
+  400: #57e0c0,
+  500: #39dbb5,
+  600: #33d7ae,
+  700: #2cd2a5,
+  800: #24cd9d,
+  900: #17c48d,
+  A100: #f6fffc,
+  A200: #65fdc8,
+  A400: #91ffd9,
+  A700: #77ffd1,
+  contrast: (
+    50: #3b3b3b,
+    100: #3b3b3b,
+    200: #3b3b3b,
+    300: #3b3b3b,
+    400: #3b3b3b,
+    500: #fcfcfc,
+    600: #fcfcfc,
+    700: #fcfcfc,
+    800: #fcfcfc,
+    900: #fcfcfc,
+    A100: #3b3b3b,
+    A200: #3b3b3b,
+    A400: #3b3b3b,
+    A700: #fcfcfc
+  )
+);
+
+$custom-accent-palette: (
+  50: #e0e7f3,
+  100: #b3c4e2,
+  200: #809dcf,
+  300: #4d75bb,
+  400: #2658ad,
+  500: #003a9e,
+  600: #003496,
+  700: #002c8c,
+  800: #002582,
+  900: #001870,
+  A100: #9fabff,
+  A200: #6c7fff,
+  A400: #3953ff,
+  A700: #1f3dff,
+  contrast: (
+    50: #3b3b3b,
+    100: #3b3b3b,
+    200: #3b3b3b,
+    300: #fcfcfc,
+    400: #fcfcfc,
+    500: #fcfcfc,
+    600: #fcfcfc,
+    700: #fcfcfc,
+    800: #fcfcfc,
+    900: #fcfcfc,
+    A100: #3b3b3b,
+    A200: #3b3b3b,
+    A400: #fcfcfc,
+    A700: #fcfcfc
+  )
+);
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$privacare-primary: mat.define-palette($custom-primary-palette, A200);
+$privacare-accent: mat.define-palette($custom-accent-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$privacare-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$privacare-theme: mat.define-light-theme((
+  color: (
+    primary: $privacare-primary,
+    accent: $privacare-accent,
+    warn: $privacare-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($privacare-theme);
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
 
 *,
 *::before,
@@ -29,3 +128,7 @@ body {
 a {
   text-decoration: none;
 }
+
+//
+//html, body { height: 100%; }
+//body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -11,11 +11,7 @@ export class NewsCardComponent {
   contentLengthThreshold: number = 50;
   seeMore: boolean = false;
 
-  expandContent() {
-    this.seeMore = true;
-  }
-
-  closeContent() {
-    this.seeMore = false;
+  toggleContent() {
+    this.seeMore = !this.seeMore;
   }
 }
