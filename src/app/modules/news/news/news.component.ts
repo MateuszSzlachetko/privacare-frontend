@@ -1,40 +1,49 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NewsInterface} from "../../../core/interfaces/news.interface";
 import {NewsService} from "../../../core/services/news.service";
 import {PageEvent} from "@angular/material/paginator";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-news',
   templateUrl: './news.component.html',
   styleUrls: ['./news.component.scss']
 })
-export class NewsComponent implements OnInit {
+export class NewsComponent implements OnInit, OnDestroy {
   length: number = 0;
   pageSize: number = 3;
   news: NewsInterface[] = [];
   pageIndex: number = 0;
   onLoad: boolean = false;
   pageEvent!: PageEvent;
+  destroy$: Subject<void> = new Subject();
 
   constructor(private newsService: NewsService) {
   }
 
   ngOnInit() {
-    this.onLoad = true;
-    this.newsService.getNews(0, this.pageSize).subscribe(data => {
-      this.news = data;
-      this.onLoad = false;
-    })
-    this.newsService.getTotalElements().subscribe(data => {
-      this.length = data;
-      console.log(data)
-    })
+    this.newsService.getNews(0, this.pageSize).pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        this.news = data;
+      })
+    this.newsService.getTotalElements().pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        this.length = data;
+      })
 
+    this.newsService.getLoadState().pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        this.onLoad = data;
+      })
+  }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onChangePage($event: PageEvent) {
-    this.onLoad = true;
-    this.newsService.getNews($event.pageIndex, $event.pageSize).subscribe(() => this.onLoad = false);
+    this.news = []
+    this.newsService.getNews($event.pageIndex, $event.pageSize);
   }
 }
