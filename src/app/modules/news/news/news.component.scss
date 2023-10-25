@@ -1,3 +1,9 @@
+@import "src/styles";
+
+$navbar-height: 54px;
+$paginator-height: 90px;
+$spinner-margin: 2rem;
+
 mat-paginator {
   display: flex;
   justify-content: center;
@@ -9,7 +15,30 @@ mat-paginator {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: $spinner-margin / 2;
+  margin-bottom: $spinner-margin / 2;
+  height: calc(100% - $paginator-height - $navbar-height - $spinner-margin);
+}
+
+.news__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.news__add-button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.5rem;
   margin-top: 1rem;
-  margin-bottom: 1rem;
-  height: calc(80% - 56px);
+  padding: 0.25rem 0.5rem;
+  background-color: rgba($primary, 0.8);
+  color: $background;
+  font-size: 1.5rem;
+  font-weight: 700;
+
+  &:hover {
+    background-color: rgba($primary, 1);
+  }
 }

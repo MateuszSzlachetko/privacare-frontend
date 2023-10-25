@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {BehaviorSubject} from "rxjs";
-import {NewsInterface, NewsResponse} from "../interfaces/news.interface";
+import {HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode} from "@angular/common/http";
+import {BehaviorSubject, Observable} from "rxjs";
+import {NewsInterface, NewsRequest, NewsResponse} from "../interfaces/news.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +73,7 @@ export class NewsService {
           if (!this.newsData.some(n => n.id === news.id))
             this.newsData.unshift(news);
         })
-        this.load$.next(false);
+        setTimeout(() => this.load$.next(false), 1000);
         return;
       }
 
@@ -82,8 +82,27 @@ export class NewsService {
           this.newsData.push(news);
       })
 
-      this.news$.next(data.content);
-      this.load$.next(false);
+
+      setTimeout(() => {
+        this.news$.next(data.content);
+        this.load$.next(false);
+      }, 500);
     })
+  }
+
+  addNews(newsRequest: NewsRequest) {
+    return new Observable<{ status: HttpStatusCode, messages: string[] }>((observer) => {
+      this.http.post<NewsInterface>(this.url, newsRequest).subscribe({
+        next: (response: NewsInterface) => {
+          this.newsData.unshift(response);
+          this.totalElements++;
+          this.totalElements$.next(this.totalElements);
+          observer.next({status: HttpStatusCode.Created, messages: []})
+        },
+        error: (error: HttpErrorResponse) => {
+          observer.next({status: HttpStatusCode.BadRequest, messages: [...error.error.messages]})
+        }
+      });
+    });
   }
 }

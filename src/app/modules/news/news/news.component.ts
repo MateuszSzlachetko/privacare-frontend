@@ -11,7 +11,7 @@ import {Subject, takeUntil} from "rxjs";
 })
 export class NewsComponent implements OnInit, OnDestroy {
   length: number = 0;
-  pageSize: number = 1;
+  pageSize: number = 3;
   news: NewsInterface[] = [];
   pageIndex: number = 0;
   onLoad: boolean = false;
@@ -25,7 +25,7 @@ export class NewsComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.news = data;
       })
-    
+
     this.newsService.getTotalElements().pipe(takeUntil(this.destroy$))
       .subscribe(data => {
         this.length = data;

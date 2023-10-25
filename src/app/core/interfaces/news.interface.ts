@@ -1,3 +1,5 @@
+import {PaginationInterface} from "./pagination.interface";
+
 export interface NewsInterface {
   id: string,
   creatorFullName: string,
@@ -6,31 +8,12 @@ export interface NewsInterface {
   content: string
 }
 
-export interface NewsResponse {
+export interface NewsRequest {
+  creatorId: string,
+  title: string,
+  content: string,
+}
+
+export interface NewsResponse extends PaginationInterface {
   content: NewsInterface[],
-  pageable: {
-    sort: {
-      empty: boolean,
-      sorted: boolean,
-      unsorted: boolean
-    },
-    offset: number,
-    pageNumber: number,
-    pageSize: number,
-    paged: boolean,
-    unpaged: boolean
-  },
-  last: boolean,
-  totalElements: number,
-  totalPages: number,
-  size: number,
-  number: number,
-  sort: {
-    empty: boolean,
-    sorted: boolean,
-    unsorted: boolean
-  },
-  first: boolean,
-  numberOfElements: number,
-  empty: boolean
 }
