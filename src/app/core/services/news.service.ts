@@ -14,32 +14,30 @@ export class NewsService {
   totalElements$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   load$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-
   constructor(private http: HttpClient) {
   }
 
   getNews(page: number, size: number) {
     const start = page * size;
     let end = start + size;
-    let areItemsInCache: boolean = true;
-    let data: NewsInterface[] = [];
+    let areItemsCached: boolean = true;
 
+    // Prevent index out of bounds and new requests when all items are loaded
     if (end > this.totalElements && this.totalElements !== 0) {
       end = end - (end - this.totalElements);
     }
 
     for (let i = start; i < end; i++) {
       if (!this.newsData[i]) {
-        areItemsInCache = false;
+        areItemsCached = false;
         break;
       }
-      data.push(this.newsData[i]);
     }
 
-    if (!areItemsInCache) {
+    if (!areItemsCached) {
       this.fetchNews(page, size, false);
     } else {
-      this.news$.next(data);
+      this.news$.next(this.newsData.slice(start, end));
     }
 
     return this.news$.asObservable();
@@ -54,52 +52,38 @@ export class NewsService {
   }
 
   private fetchNews(page: number, size: number, update: boolean) {
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
+
     this.load$.next(true);
     this.http.get<NewsResponse>(this.url, {params}).subscribe((data) => {
-      if (data.totalElements > this.totalElements && this.totalElements !== 0) {
-        let a = this.totalElements;
-        this.totalElements = data.totalElements;
-        this.fetchNews(0, data.totalElements - a, true);
-        console.log("hello")
-      }
+      let a = this.totalElements;
+      this.totalElements = data.totalElements;
+      this.totalElements$.next(this.totalElements);
 
+      if (data.totalElements > a && a !== 0) {
+        // recursive call when new news was detected
+        this.fetchNews(0, data.totalElements - a, true);
+      }
 
       if (update) {
-        console.log("test2")
-        data.content.reverse();
-        data.content.forEach(news => {
-          let isNews = this.newsData.findIndex(n => n.id == news.id)
-
-          if (isNews === -1) {
+        // add recent unique news to the beginning of the array
+        data.content.reverse().forEach(news => {
+          if (!this.newsData.some(n => n.id === news.id))
             this.newsData.unshift(news);
-          }
         })
-        // this.newsData.unshift(...data.content);
+        this.load$.next(false);
         return;
       }
-      console.log("test")
-      let newsArr: NewsInterface[] = [];
-      let i = 0;
 
       data.content.forEach(news => {
-        let isNews = this.newsData.findIndex(n => n.id == news.id)
-        console.log(isNews)
-
-        if (isNews === -1) {
+        if (!this.newsData.some(n => n.id === news.id))
           this.newsData.push(news);
-          i++;
-        }
-        newsArr.push(news)
       })
-      this.news$.next(newsArr);
-      this.totalElements = data.totalElements;
-      this.totalElements$.next(this.totalElements)
-      this.load$.next(false);
 
+      this.news$.next(data.content);
+      this.load$.next(false);
     })
-    console.log("hello3")
   }
 }
