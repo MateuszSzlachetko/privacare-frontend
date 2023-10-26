@@ -1,0 +1,42 @@
+@import "src/styles";
+
+.delete-confirmation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.delete-confirmation__row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.delete-confirmation__button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  color: $background;
+}
+
+.delete-confirmation__button--confirm {
+  background-color: rgba($primary, 0.9);
+
+  &:hover {
+    background-color: rgba($primary, 1);
+  }
+}
+
+.delete-confirmation__button--cancel {
+  background-color: rgba($error, 0.9);
+
+  &:hover {
+    background-color: rgba($error, 1);
+  }
+}

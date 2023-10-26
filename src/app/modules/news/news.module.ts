@@ -7,6 +7,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {AddNewsComponent} from './components/add-news/add-news.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {ReactiveFormsModule} from "@angular/forms";
     MatPaginatorModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
+    MatMenuModule,
   ]
 })
 export class NewsModule {

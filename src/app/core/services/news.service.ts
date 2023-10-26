@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams, HttpResponse, HttpStatusCode} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
 import {NewsInterface, NewsRequest, NewsResponse} from "../interfaces/news.interface";
 
@@ -104,5 +104,21 @@ export class NewsService {
         }
       });
     });
+  }
+
+  deleteNews(id: string) {
+    const deleteUrl = `${this.url}/${id}`
+    this.http.delete<HttpResponse<any>>(deleteUrl).subscribe({
+      next: (response) => {
+        console.log(response)
+        let i = this.newsData.findIndex(n => n.id === id);
+        if (i !== -1) {
+          this.newsData.splice(i, 1);
+        }
+      },
+      error: (error) => {
+        console.log(error.error.messages)
+      }
+    })
   }
 }

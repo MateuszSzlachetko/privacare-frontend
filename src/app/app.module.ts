@@ -9,12 +9,16 @@ import {NavbarComponent} from './components/navbar/navbar.component';
 import {NgOptimizedImage} from "@angular/common";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ReactiveFormsModule} from "@angular/forms";
+import {DeleteConfirmationComponent} from "./components/delete-confirmation/delete-confirmation.component";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NavbarComponent,
+    DeleteConfirmationComponent
   ],
   imports: [
     BrowserModule,
@@ -23,6 +27,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     NgOptimizedImage,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
