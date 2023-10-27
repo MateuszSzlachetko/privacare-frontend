@@ -5,10 +5,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 4rem;
+  margin-top: 3rem;
+  padding: 1rem;
 }
 
 .add-news__form {
+  width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -33,7 +35,7 @@
   justify-content: center;
   align-items: center;
   margin: 1rem 0;
-  width: 268px;
+  width: 100%;
 }
 
 .add-news__row-counter {
@@ -133,7 +135,7 @@ textarea.ng-invalid.ng-touched {
 }
 
 .add-news__row-error {
-  width: 300px;
+  width: 100%;
   margin-bottom: 1rem;
 
   border-radius: 0.5rem;
@@ -147,7 +149,7 @@ textarea.ng-invalid.ng-touched {
 }
 
 .add-news__row-success {
-  width: 300px;
+  width: 100%;
   margin-bottom: 1rem;
 
   padding: 1rem;
@@ -160,13 +162,18 @@ textarea.ng-invalid.ng-touched {
   }
 }
 
-@media only screen and (min-width: 668px) {
+@media only screen and (min-width: 564px) {
+  .add-news__form {
+    width: auto;
+  }
+
   .add-news__row {
     min-width: 500px;
   }
 
   .add-news__row-error,
   .add-news__row-success {
+    width: auto;
     min-width: 532px;
   }
 }
