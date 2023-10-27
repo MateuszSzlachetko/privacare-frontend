@@ -1,5 +1,7 @@
 @use '@angular/material' as mat;
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 
+@include mat.core();
 
 $text: #3b3b3b;
 $background: #fcfcfc;
@@ -7,12 +9,9 @@ $primary: #39dbb5;
 $secondary: #9afef7;
 $accent: #003a9e;
 $error: #ef1b1b;
-// Plus imports for other components in your app.
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-@include mat.core();
+$navbar-height: 54px;
+
 $custom-primary-palette: (
   50: #e7fbf6,
   100: #c4f4e9,
@@ -79,17 +78,10 @@ $custom-accent-palette: (
   )
 );
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
 $privacare-primary: mat.define-palette($custom-primary-palette, A200);
 $privacare-accent: mat.define-palette($custom-accent-palette, A200, A100, A400);
-
-// The warn palette is optional (defaults to red).
 $privacare-warn: mat.define-palette(mat.$red-palette);
 
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
 $privacare-theme: mat.define-light-theme((
   color: (
     primary: $privacare-primary,
@@ -98,13 +90,7 @@ $privacare-theme: mat.define-light-theme((
   )
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
 @include mat.all-component-themes($privacare-theme);
-
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-
 
 *,
 *::before,
@@ -130,6 +116,36 @@ a {
   text-decoration: none;
 }
 
-//
-//html, body { height: 100%; }
-//body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@mixin btn {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background-color: rgba($primary, 0.8);
+  color: $background;
+
+  &:hover {
+    background-color: rgba($primary, 1);
+  }
+}
+
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba($accent, 0.5);
+    border-radius: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba($accent, 0.6);
+  }
+}
