@@ -1,7 +1,7 @@
-<div *ngIf="onLoad" class="container__mat-spinner">
+<div *ngIf="isLoading" class="container__mat-spinner">
   <mat-spinner diameter="50"></mat-spinner>
 </div>
-<ng-container *ngIf="!onLoad">
+<ng-container *ngIf="!isLoading">
   <div class="news__row">
     <button class="news__add-button" [routerLink]="['add']">Add <span style="font-size: 1.5rem">+</span></button>
   </div>

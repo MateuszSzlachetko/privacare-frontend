@@ -5,7 +5,7 @@ import {NewsRoutingModule} from "./news-routing.module";
 import {NewsCardComponent} from './components/news-card/news-card.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {AddNewsComponent} from './components/add-news/add-news.component';
+import {NewsFormComponent} from './components/news-form/news-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatMenuModule} from "@angular/material/menu";
 
@@ -14,7 +14,7 @@ import {MatMenuModule} from "@angular/material/menu";
   declarations: [
     NewsComponent,
     NewsCardComponent,
-    AddNewsComponent
+    NewsFormComponent
   ],
   imports: [
     CommonModule,

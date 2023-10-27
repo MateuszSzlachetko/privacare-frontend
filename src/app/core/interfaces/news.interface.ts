@@ -14,6 +14,12 @@ export interface NewsRequest {
   content: string,
 }
 
+export interface NewsEditRequest {
+  id: string,
+  title: string,
+  content: string,
+}
+
 export interface NewsResponse extends PaginationInterface {
   content: NewsInterface[],
 }

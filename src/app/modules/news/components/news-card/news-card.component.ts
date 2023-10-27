@@ -3,6 +3,7 @@ import {NewsInterface} from "../../../../core/interfaces/news.interface";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../../../../components/delete-confirmation/delete-confirmation.component";
 import {NewsService} from "../../../../core/services/news.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-news-card',
@@ -14,7 +15,9 @@ export class NewsCardComponent {
   contentLengthThreshold: number = 50;
   seeMore: boolean = false;
 
-  constructor(public dialog: MatDialog, private newsService: NewsService) {
+  constructor(private dialog: MatDialog,
+              private newsService: NewsService,
+              private router: Router) {
   }
 
   toggleContent() {
@@ -24,17 +27,16 @@ export class NewsCardComponent {
   onDelete() {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       data: 'Are you sure you want to delete this news?',
-      width: '300',
-      height: '300'
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirm') {
-        console.log('Deleting')
+      if (result === 'confirm')
         this.newsService.deleteNews(this.news.id);
-      } else {
-        console.log('Deletion canceled.');
-      }
+    });
+  }
+
+  onEdit() {
+    this.router.navigate(['news/edit', this.news.id]).then(() => {
     });
   }
 }

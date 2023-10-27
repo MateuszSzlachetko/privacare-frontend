@@ -1,13 +1,14 @@
 <div class="add-news">
-  <mat-spinner *ngIf="onLoad" diameter="50"></mat-spinner>
+  <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
   <div *ngIf="displaySuccess" class="add-news__row-success">
-    Successfully added news !
+    Successfully {{ isEditMode ? 'updated' : 'created' }} news !
   </div>
   <div *ngIf="displayError" class="add-news__row-error">
     Something went wrong:
     <div *ngFor="let error of errors">{{error}}</div>
   </div>
-  <form [formGroup]="newsForm" [ngClass]="onLoad ? 'form-disabled' : ''" class="add-news__form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="newsForm" [ngClass]="isLoading ? 'form-disabled' : ''" class="add-news__form"
+        (ngSubmit)="onSubmit()">
     <div class="add-news__row">
       <label for="title">Title: </label>
       <input id="title" type="text" formControlName="title" [maxlength]="titleMaxLength">
@@ -23,6 +24,8 @@
             class="add-news__error-message">Please add content</span>
       <span class="add-news__row-counter">{{ newsForm.value.content?.length }}</span>
     </div>
-    <button type="submit" [disabled]="!newsForm.valid || onLoad" class="add-news__submit-button">Submit</button>
+    <button type="submit" [disabled]="!newsForm.valid || isLoading" class="add-news__submit-button">
+      {{ isEditMode ? 'Update' : 'Create' }}
+    </button>
   </form>
 </div>

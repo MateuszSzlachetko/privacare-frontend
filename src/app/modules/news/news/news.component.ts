@@ -14,7 +14,7 @@ export class NewsComponent implements OnInit, OnDestroy {
   pageSize: number = 3;
   news: NewsInterface[] = [];
   pageIndex: number = 0;
-  onLoad: boolean = false;
+  isLoading: boolean = false;
   destroy$: Subject<void> = new Subject();
 
   constructor(private newsService: NewsService) {
@@ -33,7 +33,7 @@ export class NewsComponent implements OnInit, OnDestroy {
 
     this.newsService.getLoadState().pipe(takeUntil(this.destroy$))
       .subscribe(data => {
-        this.onLoad = data;
+        this.isLoading = data;
       })
   }
 

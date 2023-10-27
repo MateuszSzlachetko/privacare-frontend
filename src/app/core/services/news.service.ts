@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams, HttpResponse, HttpStatusCode} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
-import {NewsInterface, NewsRequest, NewsResponse} from "../interfaces/news.interface";
+import {NewsEditRequest, NewsInterface, NewsRequest, NewsResponse} from "../interfaces/news.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +10,18 @@ export class NewsService {
   private url = '/api/news';
   private newsData: NewsInterface[] = [];
   private totalElements: number = 0;
+  private previousPage: number = 0;
+  private previousSize: number = 0;
   news$: BehaviorSubject<NewsInterface[]> = new BehaviorSubject<NewsInterface[]>([]);
   totalElements$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  load$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) {
   }
 
   getNews(page: number, size: number) {
+    this.previousPage = page;
+    this.previousSize = size;
     const start = page * size;
     let end = start + size;
     let areItemsCached: boolean = true;
@@ -48,7 +52,7 @@ export class NewsService {
   }
 
   getLoadState() {
-    return this.load$.asObservable();
+    return this.isLoading$.asObservable();
   }
 
   private fetchNews(page: number, size: number, update: boolean) {
@@ -56,7 +60,7 @@ export class NewsService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    this.load$.next(true);
+    this.isLoading$.next(true);
     this.http.get<NewsResponse>(this.url, {params}).subscribe((data) => {
       let a = this.totalElements;
       this.totalElements = data.totalElements;
@@ -73,7 +77,7 @@ export class NewsService {
           if (!this.newsData.some(n => n.id === news.id))
             this.newsData.unshift(news);
         })
-        setTimeout(() => this.load$.next(false), 1000);
+        setTimeout(() => this.isLoading$.next(false), 1000);
         return;
       }
 
@@ -85,7 +89,7 @@ export class NewsService {
 
       setTimeout(() => {
         this.news$.next(data.content);
-        this.load$.next(false);
+        this.isLoading$.next(false);
       }, 500);
     })
   }
@@ -107,18 +111,47 @@ export class NewsService {
   }
 
   deleteNews(id: string) {
-    const deleteUrl = `${this.url}/${id}`
+    const deleteUrl = `${this.url}/${id}`;
+
     this.http.delete<HttpResponse<any>>(deleteUrl).subscribe({
-      next: (response) => {
-        console.log(response)
+      next: () => {
         let i = this.newsData.findIndex(n => n.id === id);
         if (i !== -1) {
           this.newsData.splice(i, 1);
+          this.totalElements--;
+          this.totalElements$.next(this.totalElements);
+        }
+        this.news$.next(this.news$.getValue().filter(n => n.id !== id));
+        if (this.previousPage === 0) {
+          this.getNews(this.previousPage, this.previousSize);
         }
       },
-      error: (error) => {
-        console.log(error.error.messages)
+      error: () => {
       }
     })
+  }
+
+  editNews(newsEditRequest: NewsEditRequest) {
+    return new Observable<{ status: HttpStatusCode, messages: string[] }>((observer) => {
+      this.http.put<number>(this.url, newsEditRequest).subscribe({
+        next: () => {
+          let i = this.newsData.findIndex(n => n.id === newsEditRequest.id);
+          if (i !== -1) {
+            this.newsData[i].title = newsEditRequest.title;
+            this.newsData[i].content = newsEditRequest.content;
+          }
+          observer.next({status: HttpStatusCode.Ok, messages: []})
+        },
+        error: (error) => {
+          observer.next({status: HttpStatusCode.BadRequest, messages: [...error.error.messages]})
+        }
+      })
+    });
+  }
+
+  getNewsBy(id: string) {
+    const getUrl = `${this.url}/${id}`;
+
+    return this.http.get<NewsInterface>(getUrl);
   }
 }
