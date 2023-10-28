@@ -5,6 +5,7 @@ import {HomeComponent} from "./components/home/home.component";
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'news', loadChildren: () => import('./modules/news/news.module').then(m => m.NewsModule)},
+  {path: 'task', loadChildren: () => import('./modules/task/task.module').then(m => m.TaskModule)},
   {path: 'test', loadChildren: () => import('./modules/test/test.module').then(m => m.TestModule)},
 ];
 
