@@ -9,14 +9,19 @@ import {TaskService} from "../../../../core/services/task.service";
 })
 export class TaskFormComponent {
   @Input({required: true}) categoryId!: number;
+  isLoading: boolean = false;
   taskForm = this.fb.group({
     content: ['', Validators.required],
   });
+
 
   constructor(private fb: FormBuilder, private taskService: TaskService) {
   }
 
   onSubmit() {
-
+    if (!this.taskForm.valid) {
+      return;
+    }
+    this.isLoading = true;
   }
 }

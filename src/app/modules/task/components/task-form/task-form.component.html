@@ -1,8 +1,11 @@
 <div class="task-form">
-  <form [formGroup]="taskForm" class="task-form__form" (ngSubmit)="onSubmit()">
+  <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+
+  <form [formGroup]="taskForm" class="task-form__form" (ngSubmit)="onSubmit()"
+        [ngClass]="isLoading ? 'form-disabled':''">
     <label for="content">New task: </label>
     <div class="task-form__row">
-      <button type="submit" [disabled]="!taskForm.valid " class="task-form__submit-button">
+      <button type="submit" [disabled]="!taskForm.valid  || isLoading" class="task-form__submit-button">
         +
       </button>
       <input autocomplete="off" id="content" type="text" formControlName="content">

@@ -27,6 +27,10 @@
   padding: 1rem;
 }
 
+.form-disabled {
+  opacity: 0.5;
+}
+
 .task-form__row {
   display: flex;
   flex-direction: row;
@@ -85,13 +89,22 @@ input.ng-invalid.ng-touched, {
   color: $error;
 }
 
+mat-spinner {
+  z-index: 1;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
 
-@media only screen and (min-width: 564px) {
+
+@media only screen and (min-width: 576px) {
   .task-form__form {
     width: auto;
   }
 
   .task-form__row {
-    min-width: 500px;
+    min-width: 502.4px;
   }
 }
