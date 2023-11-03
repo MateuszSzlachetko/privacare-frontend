@@ -1,6 +1,12 @@
 <div class="task-form">
   <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
-
+  <div *ngIf="displaySuccess" class="news-form__row-success">
+    Successfully created task!
+  </div>
+  <div *ngIf="displayError" class="news-form__row-error">
+    Something went wrong:
+    <div *ngFor="let error of errors">{{error}}</div>
+  </div>
   <form [formGroup]="taskForm" class="task-form__form" (ngSubmit)="onSubmit()"
         [ngClass]="isLoading ? 'form-disabled':''">
     <label for="content">New task: </label>

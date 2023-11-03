@@ -27,6 +27,7 @@ export class TaskCardComponent implements OnInit {
     }))
       .subscribe(({response, newState}) => {
         this.task.state = newState;
+        console.log('test')
       })
   }
 

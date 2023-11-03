@@ -105,6 +105,9 @@ export class NewsService {
         },
         error: (error: HttpErrorResponse) => {
           observer.next({status: HttpStatusCode.BadRequest, messages: [...error.error.messages]})
+        },
+        complete: () => {
+          observer.complete()
         }
       });
     });
@@ -144,6 +147,9 @@ export class NewsService {
         },
         error: (error) => {
           observer.next({status: HttpStatusCode.BadRequest, messages: [...error.error.messages]})
+        },
+        complete: () => {
+          observer.complete()
         }
       })
     });

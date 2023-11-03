@@ -98,6 +98,33 @@ mat-spinner {
   right: 0;
 }
 
+.news-form__row-error {
+  width: 100%;
+  margin-bottom: 1rem;
+
+  border-radius: 0.5rem;
+  border: solid 2px rgba($error, 1);
+  padding: 1rem;
+
+  &:focus, &:hover {
+    outline: none;
+    box-shadow: 5px 5px 10px rgba($error, 0.3);
+  }
+}
+
+.news-form__row-success {
+  width: 100%;
+  margin-bottom: 1rem;
+
+  padding: 1rem;
+  border: solid 2px rgba($primary, 1);
+  border-radius: 0.5rem;
+
+  &:focus, &:hover {
+    outline: none;
+    box-shadow: 5px 5px 10px rgba($primary, 0.3);
+  }
+}
 
 @media only screen and (min-width: 576px) {
   .task-form__form {
@@ -106,5 +133,11 @@ mat-spinner {
 
   .task-form__row {
     min-width: 502.4px;
+  }
+
+  .news-form__row-error,
+  .news-form__row-success {
+    width: auto;
+    min-width: 536px;
   }
 }
