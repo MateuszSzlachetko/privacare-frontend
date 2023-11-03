@@ -5,6 +5,7 @@ import {TaskRoutingModule} from "./task-routing.module";
 import {MatTabsModule} from "@angular/material/tabs";
 import {TaskCardComponent} from './components/task-card/task-card.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     CommonModule,
     TaskRoutingModule,
     MatTabsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCheckboxModule
   ]
 })
 export class TaskModule {

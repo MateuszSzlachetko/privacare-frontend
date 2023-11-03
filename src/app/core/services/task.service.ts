@@ -1,25 +1,15 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject} from "rxjs";
-import {TaskInterface} from "../interfaces/task.interface";
-
-export interface TasksCategorized {
-  categoryId: number,
-  content: TaskInterface[]
-  content$: BehaviorSubject<TaskInterface[]>
-}
+import {HttpClient, HttpStatusCode} from "@angular/common/http";
+import {BehaviorSubject, delay, Observable} from "rxjs";
+import {TaskEditRequest, TaskInterface, TasksCategorized} from "../interfaces/task.interface";
+import {StateEnum} from "../enums/state.enum";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
   url: string = '/api/task';
-
-  tasksCategorized: TasksCategorized[] = [{
-    categoryId: 1,
-    content: [],
-    content$: new BehaviorSubject<TaskInterface[]>([])
-  }]
+  tasksCategorized: TasksCategorized[] = []
 
   constructor(private http: HttpClient) {
   }
@@ -47,5 +37,22 @@ export class TaskService {
       this.tasksCategorized[id - 1].content = data;
       this.tasksCategorized[id - 1].content$.next(data);
     })
+  }
+
+  updateTask(id: string, content: string, state: StateEnum) {
+    const taskEditRequest: TaskEditRequest = {id: id, content: content, state: state}
+    return new Observable<{ status: HttpStatusCode, messages: string[] }>((observer) => {
+      this.http.put<number>(this.url, taskEditRequest).subscribe({
+        next: () => {
+          observer.next({status: HttpStatusCode.Ok, messages: []})
+        },
+        error: (error) => {
+          observer.next({status: HttpStatusCode.BadRequest, messages: [...error.error.messages]})
+        },
+        complete: () => {
+          observer.complete()
+        }
+      })
+    }).pipe(delay(1000)); // mock long response to present exhaust map
   }
 }

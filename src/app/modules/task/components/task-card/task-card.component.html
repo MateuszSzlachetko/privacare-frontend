@@ -1,3 +1,14 @@
 <div class="container">
-  <div class="task-card"></div>
+  <div class="task-card">
+    <div class="task-card__check-box">
+      <mat-checkbox (change)="onStateChange($event) "
+                    [checked]="this.task.state === StateEnum.DONE"></mat-checkbox>
+    </div>
+    <div class="task-card__content" [ngClass]="this.task.state === StateEnum.DONE ? 'task-card__done':''">
+      {{task.content}}
+    </div>
+    <div class="task-card__date">
+      {{task.createdAt | date: 'dd/MM/yyyy - HH:mm'}}
+    </div>
+  </div>
 </div>

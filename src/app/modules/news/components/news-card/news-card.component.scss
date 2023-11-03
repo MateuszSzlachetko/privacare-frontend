@@ -52,7 +52,8 @@
 .news-card__content {
   margin-top: 1.5rem;
   font-size: 1.25rem;
-  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .news-card__button-group {

@@ -1,14 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CategoryService} from "../../../core/services/category.service";
 import {Subject, takeUntil} from "rxjs";
-import {CategoryInterface} from "../../../core/interfaces/category.interface";
-import {TaskInterface} from "../../../core/interfaces/task.interface";
+import {TasksTab} from "../../../core/interfaces/task.interface";
 import {TaskService} from "../../../core/services/task.service";
-
-export interface TasksTab {
-  category: CategoryInterface,
-  content: TaskInterface[]
-}
 
 @Component({
   selector: 'app-task',
