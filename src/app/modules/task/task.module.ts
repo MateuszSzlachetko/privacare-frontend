@@ -6,19 +6,24 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {TaskCardComponent} from './components/task-card/task-card.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {TaskFormComponent} from './components/task-form/task-form.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
   declarations: [
     TaskComponent,
-    TaskCardComponent
+    TaskCardComponent,
+    TaskFormComponent
   ],
   imports: [
     CommonModule,
     TaskRoutingModule,
     MatTabsModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class TaskModule {

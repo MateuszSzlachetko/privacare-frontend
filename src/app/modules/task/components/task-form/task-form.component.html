@@ -1,0 +1,14 @@
+<div class="task-form">
+  <form [formGroup]="taskForm" class="task-form__form" (ngSubmit)="onSubmit()">
+    <label for="content">New task: </label>
+    <div class="task-form__row">
+      <button type="submit" [disabled]="!taskForm.valid " class="task-form__submit-button">
+        +
+      </button>
+      <input autocomplete="off" id="content" type="text" formControlName="content">
+    </div>
+    <div *ngIf="taskForm.controls.content.touched && taskForm.controls.content.invalid"
+         class="task-form__error-message">Please add content
+    </div>
+  </form>
+</div>

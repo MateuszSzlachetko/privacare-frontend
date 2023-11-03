@@ -4,6 +4,7 @@
 <div class="test">
   <mat-tab-group dynamicHeight animationDuration="1500">
     <mat-tab *ngFor="let tab of tabs" [label]="tab.category.name">
+      <app-task-form [categoryId]="tab.category.id"></app-task-form>
       <ng-container *ngFor="let task of tab.content">
         <app-task-card [task]="task"></app-task-card>
       </ng-container>
