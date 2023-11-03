@@ -9,6 +9,11 @@
     </div>
     <div class="task-card__date">
       {{task.createdAt | date: 'dd/MM/yyyy - HH:mm'}}
+      <img src="assets/dots.png" alt="dots menu" [matMenuTriggerFor]="menu"
+           class="task-card__menu-button">
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onDelete()">Delete</button>
+      </mat-menu>
     </div>
   </div>
 </div>

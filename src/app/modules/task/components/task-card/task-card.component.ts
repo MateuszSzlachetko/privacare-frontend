@@ -4,6 +4,8 @@ import {MatCheckboxChange} from "@angular/material/checkbox";
 import {TaskService} from "../../../../core/services/task.service";
 import {StateEnum} from "../../../../core/enums/state.enum";
 import {exhaustMap, map, Subject} from "rxjs";
+import {DeleteConfirmationComponent} from "../../../../components/delete-confirmation/delete-confirmation.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-task-card',
@@ -15,7 +17,7 @@ export class TaskCardComponent implements OnInit {
   update$: Subject<boolean> = new Subject();
   @Input({required: true}) task!: TaskInterface;
 
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService, private dialog: MatDialog,) {
   }
 
   ngOnInit(): void {
@@ -27,11 +29,21 @@ export class TaskCardComponent implements OnInit {
     }))
       .subscribe(({response, newState}) => {
         this.task.state = newState;
-        console.log('test')
       })
   }
 
   onStateChange($event: MatCheckboxChange) {
     this.update$.next(true);
+  }
+
+  onDelete() {
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      data: 'Are you sure you want to delete this task?',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm')
+        this.taskService.deleteTask(this.task.id, this.task.categoryId);
+    });
   }
 }

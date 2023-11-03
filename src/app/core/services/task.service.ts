@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpStatusCode} from "@angular/common/http";
+import {HttpClient, HttpResponse, HttpStatusCode} from "@angular/common/http";
 import {BehaviorSubject, delay, Observable} from "rxjs";
 import {TaskEditRequest, TaskInterface, TaskRequest} from "../interfaces/task.interface";
 import {StateEnum} from "../enums/state.enum";
@@ -79,6 +79,22 @@ export class TaskService {
           observer.complete()
         }
       })
+    })
+  }
+
+  deleteTask(id: string, categoryId: number) {
+    const deleteUrl = `${this.url}/${id}`;
+
+    this.http.delete<HttpResponse<any>>(deleteUrl).subscribe({
+      next: () => {
+        const i = this.tasksCategorized[categoryId - 1].content.findIndex(t => t.id === id);
+        this.tasksCategorized[categoryId - 1].content.splice(i, 1);
+        this.tasksCategorized[categoryId - 1].content$.next(
+          this.tasksCategorized[categoryId - 1].content
+        );
+      },
+      error: () => {
+      },
     })
   }
 }
