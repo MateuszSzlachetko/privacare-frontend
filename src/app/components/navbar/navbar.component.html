@@ -16,20 +16,26 @@
       Notes
     </a>
   </div>
-  <button *ngIf="isDropdownAvailable" (click)="toggleDropdown()" class="navbar__button">
+  <button *ngIf="isDropdownAvailable" [disabled]="isAnimating" (click)="toggleDropdown()" class="navbar__button">
     <img src="assets/hamburger.png" alt="dropdown menu button"
          class="navbar__menu-button">
   </button>
 </nav>
-<div *ngIf="showDropdown && isDropdownAvailable" [@inAnimation]="showDropdown"
+<div *ngIf="showDropdown"
+     [@InOutAnimation]="showDropdown"
+     (@InOutAnimation.start)="onAnimationStart($event)"
+     (@InOutAnimation.done)="onAnimationDone($event)"
      class="navbar__link-group navbar__link-group--dropdown">
-  <a [routerLink]="['news']" class="navbar__link">
+  <a #news (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'news'"
+     class="navbar__link">
     News
   </a>
-  <a [routerLink]="['task']" class="navbar__link">
+  <a #task (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'task'"
+     class="navbar__link">
     Tasks
   </a>
-  <a [routerLink]="['note']" class="navbar__link">
+  <a #note (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'note'"
+     class="navbar__link">
     Notes
   </a>
 </div>
