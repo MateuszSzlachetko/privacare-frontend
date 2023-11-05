@@ -1,0 +1,25 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width">
+        <mat-label>Pesel</mat-label>
+        <input type="text"
+               placeholder="Pick one"
+               aria-label="Pesel"
+               matInput
+               [formControl]="myControl"
+               [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="optionSelected($event)"
+                          [displayWith]="displayUser">
+            <mat-option *ngFor="let user of users" [value]="user">
+                {{user.name}}
+                {{user.surname}}
+                {{user.pesel}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</form>
+<div *ngIf="!notes || notes.length ===0">
+    There are no available notes yet
+</div>
+<div *ngFor="let note of notes">
+    {{note.content}}
+</div>
