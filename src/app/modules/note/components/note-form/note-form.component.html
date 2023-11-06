@@ -1,0 +1,24 @@
+<div class="note-form">
+    <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+    <div *ngIf="displaySuccess" class="note-form__row-success">
+        Successfully {{ isEditMode ? 'updated' : 'created' }} note!
+    </div>
+    <div *ngIf="displayError" class="note-form__row-error">
+        Something went wrong:
+        <div *ngFor="let error of errors">{{error}}</div>
+    </div>
+    <form [formGroup]="noteForm" [ngClass]="isLoading ? 'form-disabled' : ''" class="note-form__form"
+          (ngSubmit)="onSubmit()">
+        <div class="note-form__row">
+            <label for="content">Content: </label>
+            <textarea id="content" type="text" formControlName="content">
+      </textarea>
+            <span *ngIf="noteForm.controls.content.touched && noteForm.controls.content.invalid"
+                  class="note-form__error-message">Please add content</span>
+            <span class="note-form__row-counter">{{ noteForm.value.content?.length }}</span>
+        </div>
+        <button type="submit" [disabled]="!noteForm.valid || isLoading" class="note-form__submit-button">
+            {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+    </form>
+</div>

@@ -5,3 +5,14 @@ export interface NoteInterface {
   createdAt: Date,
   content: string,
 }
+
+export interface NoteRequest {
+  creatorId: string,
+  patientId: string,
+  content: string,
+}
+
+export interface NoteEditRequest {
+  id: string,
+  content: string,
+}

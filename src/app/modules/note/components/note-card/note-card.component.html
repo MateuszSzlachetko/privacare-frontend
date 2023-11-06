@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="note-card">
+        <div class="note-card__row-group">
+            <div class="note-card__creator-name">
+                Note by
+                <mat-spinner *ngIf="isLoading" diameter="15"></mat-spinner>
+                {{creator.name}} {{creator.surname}}
+            </div>
+            <div class="note-card__date">
+                {{note.createdAt | date: 'dd/MM/yyyy - HH:mm'}}
+                <img src="assets/dots.png" alt="dots menu" [matMenuTriggerFor]="menu"
+                     class="note-card__menu-button">
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="onEdit()">Edit</button>
+                    <button mat-menu-item (click)="onDelete()">Delete</button>
+                </mat-menu>
+            </div>
+        </div>
+        <p class="note-card__content">
+            {{note.content}}
+        </p>
+    </div>
+</div>

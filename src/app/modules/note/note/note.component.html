@@ -1,14 +1,15 @@
-<form class="example-form">
-    <mat-form-field class="example-full-width">
+<form class="search-form">
+    <mat-form-field class="search-form__input">
         <mat-label>Pesel</mat-label>
         <input type="text"
-               placeholder="Pick one"
+               placeholder="Choose one"
                aria-label="Pesel"
                matInput
                [formControl]="myControl"
                [matAutocomplete]="auto">
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="optionSelected($event)"
-                          [displayWith]="displayUser">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                          (optionSelected)="optionSelected($event)"
+                          [displayWith]="displayInput">
             <mat-option *ngFor="let user of users" [value]="user">
                 {{user.name}}
                 {{user.surname}}
@@ -17,9 +18,19 @@
         </mat-autocomplete>
     </mat-form-field>
 </form>
-<div *ngIf="!notes || notes.length ===0">
-    There are no available notes yet
+<div *ngIf="!notes || notes.length ===0" class="container__mat-spinner">
+    <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+    <div *ngIf="!notes || notes.length ===0 && !isLoading">
+        There are no available notes yet
+    </div>
+</div>
+<div *ngIf="selectedPatient.id && !isLoading">
+    <div class="note__row">
+        <button class="note__add-button" [routerLink]="['add']" [queryParams]="{patientId: selectedPatient.id}">
+            Add <span style="font-size: 1.5rem">+</span>
+        </button>
+    </div>
 </div>
 <div *ngFor="let note of notes">
-    {{note.content}}
+    <app-note-card [note]="note"></app-note-card>
 </div>

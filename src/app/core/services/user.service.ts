@@ -17,4 +17,21 @@ export class UserService {
 
     return this.http.get<UserInterface[]>(this.url, {params});
   }
+
+  getUserById(creatorId: string) {
+    const idUrl = `${this.url}/${creatorId}`
+    return this.http.get<UserInterface>(idUrl);
+  }
+
+  getBlankUser() {
+    return {
+      id: '',
+      authId: '',
+      createdAt: new Date(),
+      name: '',
+      surname: '',
+      pesel: '',
+      phoneNumber: '',
+    }
+  }
 }
