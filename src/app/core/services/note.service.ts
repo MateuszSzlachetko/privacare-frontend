@@ -49,6 +49,7 @@ export class NoteService {
     return new Observable<{ status: HttpStatusCode, messages: string[] }>((observer) => {
       this.http.post<NoteInterface>(this.url, noteRequest).subscribe({
         next: (response: NoteInterface) => {
+          this.updatePatientNotes(response.patientId, response, undefined);
           observer.next({status: HttpStatusCode.Created, messages: []})
         },
         error: (error: HttpErrorResponse) => {
@@ -61,11 +62,12 @@ export class NoteService {
     });
   }
 
-  deleteNote(id: string) {
+  deleteNote(id: string, patientId: string) {
     const deleteUrl = `${this.url}/${id}`;
 
     this.http.delete<HttpResponse<any>>(deleteUrl).subscribe({
       next: () => {
+        this.updatePatientNotes(patientId, undefined, undefined, id);
       },
       error: () => {
       },
@@ -78,10 +80,11 @@ export class NoteService {
     return this.http.get<NoteInterface>(getUrl);
   }
 
-  editNote(noteEditRequest: NoteEditRequest) {
+  editNote(noteEditRequest: NoteEditRequest, patientId: string) {
     return new Observable<{ status: HttpStatusCode, messages: string[] }>((observer) => {
       this.http.put<number>(this.url, noteEditRequest).subscribe({
         next: () => {
+          this.updatePatientNotes(patientId, undefined, noteEditRequest);
           observer.next({status: HttpStatusCode.Ok, messages: []})
         },
         error: (error) => {
@@ -92,5 +95,30 @@ export class NoteService {
         }
       })
     });
+  }
+
+  updatePatientNotes(patientId: string, note?: NoteInterface, editedNote?: NoteEditRequest, deletedNoteId?: string) {
+    const i = this.patientNotes.findIndex(pN => pN.patientId === patientId)
+
+    if (i === -1)
+      return;
+
+    if (note) {
+      this.patientNotes[i].notes.unshift(note);
+      this.patientNotes[i].notes$.next(this.patientNotes[i].notes); // todo: a separate class method, hashMap with patientNote as a key
+      return;
+    }
+
+    if (editedNote) {
+      const note = this.patientNotes[i].notes.find(n => n.id === editedNote.id)
+      note ? note.content = editedNote.content : '';
+      this.patientNotes[i].notes$.next(this.patientNotes[i].notes);
+    }
+
+    if (deletedNoteId) {
+      const d = this.patientNotes[i].notes.findIndex(n => n.id === deletedNoteId)
+      this.patientNotes[i].notes.splice(d, 1);
+      this.patientNotes[i].notes$.next(this.patientNotes[i].notes);
+    }
   }
 }

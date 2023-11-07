@@ -90,7 +90,7 @@ export class NoteFormComponent implements OnInit {
   }
 
   editNote(noteEditRequest: NoteEditRequest) {
-    this.noteService.editNote(noteEditRequest).subscribe(response => {
+    this.noteService.editNote(noteEditRequest, this.patientId).subscribe(response => {
         setTimeout(() => {
           this.isLoading = false;
           if (response.status === HttpStatusCode.Ok) {

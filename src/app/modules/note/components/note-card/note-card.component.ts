@@ -39,12 +39,13 @@ export class NoteCardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'confirm')
-        this.noteService.deleteNote(this.note.id);
+        this.noteService.deleteNote(this.note.id, this.note.patientId);
     });
   }
 
   onEdit() {
-    this.router.navigate(['note/edit', this.note.id]).then(() => {
+    this.router.navigate(['note/edit', this.note.id],
+      {queryParams: {patientId: this.note.patientId}}).then(() => {
     });
   }
 }
