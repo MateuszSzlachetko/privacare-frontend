@@ -1,21 +1,48 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams, HttpResponse, HttpStatusCode} from "@angular/common/http";
 import {NoteEditRequest, NoteInterface, NoteRequest} from "../interfaces/note.interface";
-import {Observable} from "rxjs";
+import {Observable, ReplaySubject} from "rxjs";
+
+interface PatientNotes {
+  patientId: string,
+  notes: NoteInterface[]
+  notes$: ReplaySubject<NoteInterface[]>
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class NoteService {
   url: string = '/api/note';
+  patientNotes: PatientNotes[] = [];
 
   constructor(private http: HttpClient) {
   }
 
   getNotesByPatientId(id: string) {
+    const i = this.patientNotes.findIndex(pN => pN.patientId === id)
+    if (i !== -1) {
+      return this.patientNotes[i].notes$.asObservable();
+    }
+
+    const newIndex = this.patientNotes.push({
+      patientId: id,
+      notes: [],
+      notes$: new ReplaySubject<NoteInterface[]>(1)
+    }) - 1;
+
+    this.fetchNotesByPatientId(id, newIndex);
+
+    return this.patientNotes[newIndex].notes$.asObservable();
+  }
+
+  private fetchNotesByPatientId(id: string, newIndex: number) {
     const params = new HttpParams().set('patientId', id);
 
-    return this.http.get<NoteInterface[]>(this.url, {params});
+    return this.http.get<NoteInterface[]>(this.url, {params}).subscribe(data => {
+      this.patientNotes[newIndex].notes = data;
+      this.patientNotes[newIndex].notes$.next(data);
+    })
   }
 
   addNote(noteRequest: NoteRequest) {
