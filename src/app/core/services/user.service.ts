@@ -12,7 +12,7 @@ interface User {
   providedIn: 'root'
 })
 export class UserService {
-  url: string = '/api/user';
+  url: string = '/api/users';
   users: User[] = []
 
 

@@ -5,7 +5,7 @@ import {UserInterface} from "../../../core/interfaces/user.interface";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {NoteInterface} from "../../../core/interfaces/note.interface";
 import {NoteService} from "../../../core/services/note.service";
-import {delay} from "rxjs";
+import {debounceTime, delay} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
@@ -50,14 +50,10 @@ export class NoteComponent implements OnInit {
     this.myControl.valueChanges.subscribe(value => {
       if (value === '')
         this.router.navigate(['/note']).then();
+    })
 
-      if (!this.isDigitsOnly(value))
-        return;
-
-      if (value !== '' && value)
-        this.userService.getUsersByPeselFragment(value).subscribe(data => {
-          this.users = data;
-        })
+    this.myControl.valueChanges.pipe(debounceTime(300)).subscribe(value => {
+      this.getUsers(value || '');
     })
   }
 
@@ -80,6 +76,16 @@ export class NoteComponent implements OnInit {
       .subscribe(data => {
         this.notes = data;
         this.isLoading = false;
+      })
+  }
+
+  getUsers(peselFragment: string) {
+    if (!this.isDigitsOnly(peselFragment))
+      return;
+
+    if (peselFragment !== '' && peselFragment)
+      this.userService.getUsersByPeselFragment(peselFragment).subscribe(data => {
+        this.users = data;
       })
   }
 

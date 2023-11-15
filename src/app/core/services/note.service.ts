@@ -5,15 +5,19 @@ import {Observable, ReplaySubject} from "rxjs";
 
 interface PatientNotes {
   patientId: string,
-  notes: NoteInterface[]
+  notes: NoteInterface[],
   notes$: ReplaySubject<NoteInterface[]>
+}
+
+const emitValue = (arg: PatientNotes) => {
+  arg.notes$.next(arg.notes);
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class NoteService {
-  url: string = '/api/note';
+  url: string = '/api/notes';
   patientNotes: PatientNotes[] = [];
 
   constructor(private http: HttpClient) {
@@ -41,7 +45,7 @@ export class NoteService {
 
     return this.http.get<NoteInterface[]>(this.url, {params}).subscribe(data => {
       this.patientNotes[newIndex].notes = data;
-      this.patientNotes[newIndex].notes$.next(data);
+      emitValue(this.patientNotes[newIndex]);
     })
   }
 
@@ -105,20 +109,20 @@ export class NoteService {
 
     if (note) {
       this.patientNotes[i].notes.unshift(note);
-      this.patientNotes[i].notes$.next(this.patientNotes[i].notes); // todo: a separate class method, hashMap with patientNote as a key
+      emitValue(this.patientNotes[i]);
       return;
     }
 
     if (editedNote) {
       const note = this.patientNotes[i].notes.find(n => n.id === editedNote.id)
       note ? note.content = editedNote.content : '';
-      this.patientNotes[i].notes$.next(this.patientNotes[i].notes);
+      emitValue(this.patientNotes[i]);
     }
 
     if (deletedNoteId) {
       const d = this.patientNotes[i].notes.findIndex(n => n.id === deletedNoteId)
       this.patientNotes[i].notes.splice(d, 1);
-      this.patientNotes[i].notes$.next(this.patientNotes[i].notes);
+      emitValue(this.patientNotes[i]);
     }
   }
 }
