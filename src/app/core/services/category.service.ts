@@ -7,7 +7,7 @@ import {BehaviorSubject} from "rxjs";
   providedIn: 'root'
 })
 export class CategoryService {
-  url: string = '/api/task/category'
+  url: string = '/api/tasks/categories'
   categories: CategoryInterface[] = [];
   categories$: BehaviorSubject<CategoryInterface[]> = new BehaviorSubject<CategoryInterface[]>([]);
 

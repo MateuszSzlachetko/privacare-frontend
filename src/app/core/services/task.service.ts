@@ -14,7 +14,7 @@ export interface TasksCategorized {
   providedIn: 'root'
 })
 export class TaskService {
-  url: string = '/api/task';
+  url: string = '/api/tasks';
   tasksCategorized: TasksCategorized[] = []
 
   constructor(private http: HttpClient) {
