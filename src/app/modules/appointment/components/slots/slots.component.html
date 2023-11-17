@@ -1,0 +1,28 @@
+<div class="grid-container" #gridContainer>
+  <button (click)="loadPreviousPage()" style="z-index: 1">
+    Previous page
+  </button>
+  <div class="grid" [@slideAnimations]="animationState"
+       (@slideAnimations.start)="onAnimationStart($event)"
+       (@slideAnimations.done)="onAnimationDone($event)">
+    <div class="grid-item" *ngFor="let dateKey of dateKeys">
+      <div class="date">
+        {{Date.parse(dateKey.toString()) | date:'EEEE, dd-MM-yyy'}}
+      </div>
+      <div class="slots">
+        <div class="test" *ngFor="let slot of getMapSlots(dateKey.toString())">
+          <button [ngClass]="['slot__button', slot.reserved ? 'reserved':'']">
+            {{slot.startsAt | date:'HH:mm'}}
+          </button>
+        </div>
+        <div *ngIf="getMapSlots(dateKey.toString())?.length === 0 || !getMapSlots(dateKey.toString())"
+             class="no-visits">
+          No visits
+        </div>
+      </div>
+    </div>
+  </div>
+  <button (click)="loadNextPage()" style="z-index: 1">
+    Next page
+  </button>
+</div>

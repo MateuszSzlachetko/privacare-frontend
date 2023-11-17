@@ -28,6 +28,7 @@ export class NavbarComponent implements OnInit {
   @ViewChild('news') newsLink!: ElementRef;
   @ViewChild('task') tasksLink!: ElementRef;
   @ViewChild('note') notesLink!: ElementRef;
+  @ViewChild('appointment') appointmentsLink!: ElementRef;
 
   constructor(private breakpointObserver: BreakpointObserver, private renderer: Renderer2) {
   }
@@ -71,5 +72,6 @@ export class NavbarComponent implements OnInit {
     this.renderer.setStyle(this.newsLink.nativeElement, 'pointer-events', 'none');
     this.renderer.setStyle(this.tasksLink.nativeElement, 'pointer-events', 'none');
     this.renderer.setStyle(this.notesLink.nativeElement, 'pointer-events', 'none');
+    this.renderer.setStyle(this.appointmentsLink.nativeElement, 'pointer-events', 'none');
   }
 }
