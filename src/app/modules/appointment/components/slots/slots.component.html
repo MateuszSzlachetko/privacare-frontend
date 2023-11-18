@@ -1,6 +1,6 @@
 <div class="grid-container" #gridContainer>
-  <button (click)="loadPreviousPage()" style="z-index: 1">
-    Previous page
+  <button (click)="loadPreviousPage()" class="page-button">
+    <
   </button>
   <div class="grid" [@slideAnimations]="animationState"
        (@slideAnimations.start)="onAnimationStart($event)"
@@ -11,7 +11,8 @@
       </div>
       <div class="slots">
         <div class="test" *ngFor="let slot of getMapSlots(dateKey.toString())">
-          <button [ngClass]="['slot__button', slot.reserved ? 'reserved':'']">
+          <button [ngClass]="['slot__button', slot.reserved ? 'reserved':'']" (click)="reserve(slot)"
+                  [disabled]="slot.reserved">
             {{slot.startsAt | date:'HH:mm'}}
           </button>
         </div>
@@ -22,7 +23,7 @@
       </div>
     </div>
   </div>
-  <button (click)="loadNextPage()" style="z-index: 1">
-    Next page
+  <button (click)="loadNextPage()" class="page-button">
+    >
   </button>
 </div>

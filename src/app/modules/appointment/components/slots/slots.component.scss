@@ -44,6 +44,26 @@
   top: 0;
   padding-top: 20px;
   background-color: #f4f4f4;
+  font-weight: 700;
+}
+
+.page-button {
+  z-index: 1;
+  font-size: 2.25rem;
+  border-radius: 50%;
+  padding: 0 0.7rem;
+  color: $accent;
+  background-color: #f4f4f4;
+  border: solid 2px rgba($accent, 0.1);
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  cursor: pointer;
+  margin: 0 0.25rem;
+
+  &:hover {
+    background-color: rgba($accent, 0.75);
+    color: #f4f4f4;
+    border-color: rgba($accent, 0.8);
+  }
 }
 
 .slots {

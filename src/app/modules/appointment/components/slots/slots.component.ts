@@ -4,6 +4,7 @@ import {SlotInterface} from "../../../../core/interfaces/slot.interface";
 import {DatePipe} from "@angular/common";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {BreakpointObserver, BreakpointState} from "@angular/cdk/layout";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-slots',
@@ -41,7 +42,10 @@ export class SlotsComponent implements OnInit {
   @ViewChild('gridContainer') gridContainer!: ElementRef;
 
 
-  constructor(private slotService: SlotService, private breakpointObserver: BreakpointObserver, private renderer: Renderer2) {
+  constructor(private slotService: SlotService,
+              private breakpointObserver: BreakpointObserver,
+              private renderer: Renderer2,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -123,4 +127,13 @@ export class SlotsComponent implements OnInit {
     this.renderer.setStyle(this.gridContainer.nativeElement, 'overflow-x', 'auto');
   }
 
+  reserve(slot: SlotInterface) {
+    this.router.navigate(['appointment/slots/reserve'], {
+      queryParams: {
+        id: slot.id,
+        startsAt: slot.startsAt
+      }
+    }).then(r => {
+    });
+  }
 }

@@ -1,0 +1,29 @@
+<div class="appointment-form">
+  <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+  <div *ngIf="displaySuccess" class="appointment-form__row-success">
+    Successfully created appointment !
+  </div>
+  <div *ngIf="displayError" class="appointment-form__row-error">
+    Something went wrong:
+    <div *ngFor="let error of errors">{{error}}</div>
+  </div>
+  <form [formGroup]="appointmentForm" [ngClass]="isLoading ? 'form-disabled' : ''" class="appointment-form__form"
+        (ngSubmit)="onSubmit()">
+    <div class="appointment-form__info">
+      Confirm the appointment
+    </div>
+    <div class="appointment-form__info appointment-form__info_user">
+      Doctor: {{doctor.name}} {{doctor.surname}}
+    </div>
+    <div class="appointment-form__info appointment-form__info_user">
+      Patient: {{patient.name}} {{patient.surname}}
+    </div>
+    <div class="appointment-form__info appointment-form__info_date">
+      Date: <span>{{slotStartsAt | date:'EEEE HH:mm dd-MM-yyyy'}}</span>
+    </div>
+    <button type="submit" [disabled]="!appointmentForm.valid || isLoading || confirmDisabled"
+            class="appointment-form__submit-button">
+      Confirm
+    </button>
+  </form>
+</div>

@@ -1,0 +1,196 @@
+@import "src/styles";
+
+.appointment-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+  padding: 1rem;
+}
+
+.appointment-form__info {
+  font-size: 1.75rem;
+  margin: 0.5rem 1rem 2rem;
+  font-weight: bold;
+}
+
+.appointment-form__info_user {
+  align-self: flex-start;
+  font-weight: 400;
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.appointment-form__info_date {
+  align-self: flex-start;
+  font-weight: 400;
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
+
+  & > span {
+    text-decoration: underline;
+  }
+}
+
+.appointment-form__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  background-color: #f4f4f4;
+  color: $text;
+  border: solid 1px rgba(#000000, 0.2);
+  border-radius: 0.5rem;
+  transition: box-shadow 0.5s;
+
+  &:hover {
+    box-shadow: 5px 5px 10px rgba($primary, 0.3);
+  }
+
+  padding: 1rem;
+}
+
+.appointment-form__row {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  min-width: 500px;
+}
+
+.appointment-form__row-counter {
+  position: absolute;
+  bottom: -1.5rem;
+  right: 0.5rem;
+}
+
+label {
+  display: block;
+  align-self: flex-start;
+  font-size: 2rem;
+  margin: 0.5rem 0;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  font-size: 1.5rem;
+  color: $text;
+  border: solid 2px rgba(#000000, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+
+  &:focus {
+    border: none;
+    outline: $primary solid 2px;
+    box-shadow: 5px 5px 10px rgba($primary, 0.3);
+  }
+}
+
+textarea {
+  width: 100%;
+  resize: none;
+  font-size: 1.25rem;
+  color: $text;
+  border: solid 2px rgba(#000000, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  height: 8 * 1.25rem;
+
+  &:focus {
+    border: none;
+    outline: $primary solid 2px;
+    box-shadow: 5px 5px 10px rgba($primary, 0.3);
+  }
+
+  @include custom-scrollbar();
+}
+
+.appointment-form__submit-button {
+  @include btn();
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+
+  &:disabled {
+    background-color: rgba(#3b3b3b, 0.4);
+    cursor: not-allowed;
+  }
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border: solid 2px rgba($error, 1);
+
+  &:focus, &:hover {
+    outline: none;
+    box-shadow: 5px 5px 10px rgba($error, 0.3);
+  }
+}
+
+.appointment-form__row-error {
+  width: 100%;
+  margin-bottom: 1rem;
+
+  border-radius: 0.5rem;
+  border: solid 2px rgba($error, 1);
+  padding: 1rem;
+
+  &:focus, &:hover {
+    outline: none;
+    box-shadow: 5px 5px 10px rgba($error, 0.3);
+  }
+}
+
+.appointment-form__row-success {
+  width: 100%;
+  margin-bottom: 1rem;
+
+  padding: 1rem;
+  border: solid 2px rgba($primary, 1);
+  border-radius: 0.5rem;
+
+  &:focus, &:hover {
+    outline: none;
+    box-shadow: 5px 5px 10px rgba($primary, 0.3);
+  }
+}
+
+mat-spinner {
+  z-index: 1;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
+.appointment-form__error-message {
+  color: $error;
+  align-self: flex-start;
+}
+
+.form-disabled {
+  opacity: 0.5;
+}
+
+@media only screen and (min-width: 594px) {
+  .appointment-form__form {
+    width: auto;
+    min-width: 560px;
+  }
+
+  .appointment-form__row {
+    min-width: 500px;
+  }
+
+  .appointment-form__row-error,
+  .appointment-form__row-success {
+    width: auto;
+    min-width: 560px;
+  }
+}
