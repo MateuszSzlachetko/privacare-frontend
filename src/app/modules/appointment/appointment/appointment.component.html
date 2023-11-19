@@ -1,1 +1,18 @@
+<div class="navigation-container">
+  <mat-button-toggle-group #group="matButtonToggleGroup" [value]="routeValue" name="appointments-navigation"
+                           (change)="onNavigationChange(group.value)">
+    <mat-button-toggle value="reserve" class="navigation-button">
+      Reserve
+    </mat-button-toggle>
+    <mat-button-toggle value="my-appointments" class="navigation-button">
+      My appointments
+    </mat-button-toggle>
+    <mat-button-toggle value="add-slots" class="navigation-button">
+      Add slots
+    </mat-button-toggle>
+    <mat-button-toggle value="doctor-appointments" class="navigation-button">
+      Doctor's appointments
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
 <router-outlet></router-outlet>

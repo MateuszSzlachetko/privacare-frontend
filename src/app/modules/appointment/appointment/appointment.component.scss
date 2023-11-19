@@ -1,0 +1,11 @@
+@import "src/styles";
+
+.navigation-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.navigation-button {
+  color: $text;
+}

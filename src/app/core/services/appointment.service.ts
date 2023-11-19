@@ -1,10 +1,7 @@
 import {Injectable} from '@angular/core';
-import {AppointmentRequest} from "../interfaces/appointment.interface";
-import {HttpClient, HttpStatusCode} from "@angular/common/http";
+import {AppointmentInterface, AppointmentRequest} from "../interfaces/appointment.interface";
+import {HttpClient, HttpParams, HttpStatusCode} from "@angular/common/http";
 import {delay, Observable} from "rxjs";
-
-class AppointmentInterface {
-}
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +26,11 @@ export class AppointmentService {
         }
       })
     })
+  }
+
+  getAppointmentsByPatientId(patientId: string) {
+    const params = new HttpParams().set('patientId', patientId)
+
+    return this.http.get<AppointmentInterface[]>(this.url, {params: params});
   }
 }

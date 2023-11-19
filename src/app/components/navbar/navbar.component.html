@@ -9,7 +9,7 @@
     <a [routerLink]="['news']" class="navbar__link">
       News
     </a>
-    <a [routerLink]="['appointment']" class="navbar__link">
+    <a [routerLink]="['appointment/slots']" class="navbar__link">
       Appointments
     </a>
     <a [routerLink]="['task']" class="navbar__link">
@@ -33,7 +33,7 @@
      class="navbar__link">
     News
   </a>
-  <a #appointment (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'appointment'"
+  <a #appointment (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'appointment/slots'"
      class="navbar__link">
     Appointments
   </a>

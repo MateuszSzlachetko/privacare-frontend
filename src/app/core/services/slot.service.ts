@@ -17,4 +17,9 @@ export class SlotService {
       .set("endDate", endDate)
     return this.http.get<SlotInterface[]>(this.url, {params: params});
   }
+
+  getSlotById(slotId: any) {
+    const url = `${this.url}/${slotId}`
+    return this.http.get<SlotInterface>(url);
+  }
 }
