@@ -1,5 +1,8 @@
 <div class="navigation-container">
-  <mat-button-toggle-group #group="matButtonToggleGroup" [value]="routeValue" name="appointments-navigation"
+  <mat-button-toggle-group #group="matButtonToggleGroup"
+                           [value]="routeValue"
+                           [vertical]="verticalNavigation"
+                           name="appointments-navigation"
                            (change)="onNavigationChange(group.value)">
     <mat-button-toggle value="reserve" class="navigation-button">
       Reserve

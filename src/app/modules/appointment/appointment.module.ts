@@ -8,7 +8,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {ReactiveFormsModule} from "@angular/forms";
 import {PatientAppointmentsComponent} from './components/patient-appointments/patient-appointments.component';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
-import { AppointmentCardComponent } from './components/appointment-card/appointment-card.component';
+import {AppointmentCardComponent} from './components/appointment-card/appointment-card.component';
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { AppointmentCardComponent } from './components/appointment-card/appointm
     AppointmentRoutingModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatMenuModule
   ]
 })
 export class AppointmentModule {

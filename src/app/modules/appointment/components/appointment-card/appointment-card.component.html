@@ -1,1 +1,30 @@
-<p>appointment-card works!</p>
+<div class="container">
+  <div class="appointment-card" [ngClass]="isOutdated ? 'appointment-disabled' : ''">
+    <div class="appointment-card__row-group">
+      <div class="appointment-card__date">
+        <span class="appointment-card__date-info">Date: </span>
+        {{slot.startsAt | date:'HH:mm  dd-MM-yyyy'}}
+      </div>
+      <div>
+        <img src="assets/dots.png" alt="dots menu" [matMenuTriggerFor]="!isOutdated ? menu : null"
+             class="appointment-card__menu-button">
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="onDelete()">Delete</button>
+        </mat-menu>
+      </div>
+    </div>
+    <div class="appointment-card__row-group">
+      <div class="appointment-card__name">
+        Appointment of
+        {{patient.name}} {{patient.surname}}
+      </div>
+    </div>
+    <div class="appointment-card__row-group">
+      <div class="appointment-card__name">
+        Doctor -
+        <mat-spinner *ngIf="isLoading" diameter="15"></mat-spinner>
+        {{doctor.name}} {{doctor.surname}}
+      </div>
+    </div>
+  </div>
+</div>

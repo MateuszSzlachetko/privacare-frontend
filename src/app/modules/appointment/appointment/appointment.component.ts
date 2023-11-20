@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {NavigationEnd, Router} from "@angular/router";
+import {filter} from "rxjs";
+import {BreakpointObserver} from "@angular/cdk/layout";
 
 @Component({
   selector: 'app-appointment',
@@ -9,22 +11,23 @@ import {Router} from "@angular/router";
 export class AppointmentComponent implements OnInit {
   patientId = '432b984b-3a3e-4078-af5d-c620bd3b9159';
   routeValue: string = 'reserve';
+  verticalNavigation: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private breakpointObserver: BreakpointObserver) {
   }
 
   ngOnInit() {
-    this.router.url
-    switch (this.router.url.slice(13, 14)) {
-      case 's': // /appointment/(s)lots
-        this.routeValue = 'reserve';
-        break;
-      case 'p': // /appointment/(p)atient...
-        this.routeValue = 'my-appointments';
-        break;
-      default:
-        break;
-    }
+    this.updateSelectedNavigation();
+
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd)
+    ).subscribe(e => {
+      this.updateSelectedNavigation()
+    });
+
+    this.breakpointObserver.observe(["(max-width: 520px)"]).subscribe(state => {
+      this.verticalNavigation = state.matches;
+    })
   }
 
   onNavigationChange(value: string) {
@@ -34,6 +37,19 @@ export class AppointmentComponent implements OnInit {
         break;
       case 'my-appointments': //todo auth service
         this.router.navigate(['appointment/patient/', this.patientId]).then();
+        break;
+      default:
+        break;
+    }
+  }
+
+  updateSelectedNavigation() {
+    switch (this.router.url.slice(13, 14)) {
+      case 's': // /appointment/(s)lots
+        this.routeValue = 'reserve';
+        break;
+      case 'p': // /appointment/(p)atient...
+        this.routeValue = 'my-appointments';
         break;
       default:
         break;

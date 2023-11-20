@@ -1,5 +1,7 @@
-<ol class="appointments-container">
-  <li *ngFor="let appointment of patientAppointments.appointments">
-    {{appointment.slotId}}
-  </li>
-</ol>
+<div *ngFor="let appointment of patientAppointments.appointments">
+  <app-appointment-card
+    [appointment]="appointment"
+    [slot]="getSlot(appointment.id)"
+    [patient]="patient">
+  </app-appointment-card>
+</div>

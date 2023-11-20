@@ -4,6 +4,8 @@ import {AppointmentService} from "../../../../core/services/appointment.service"
 import {AppointmentInterface} from "../../../../core/interfaces/appointment.interface";
 import {SlotInterface} from "../../../../core/interfaces/slot.interface";
 import {SlotService} from "../../../../core/services/slot.service";
+import {UserService} from "../../../../core/services/user.service";
+import {UserInterface} from "../../../../core/interfaces/user.interface";
 
 export interface UserAppointments {
   appointments: AppointmentInterface[];
@@ -18,10 +20,13 @@ export interface UserAppointments {
 export class PatientAppointmentsComponent implements OnInit {
   patientId: string = '';
   patientAppointments: UserAppointments = {appointments: [], slots: new Map()}
+  isLoading: boolean = false;
+  patient: UserInterface = this.userService.getBlankUser();
 
   constructor(private route: ActivatedRoute,
               private appointmentService: AppointmentService,
-              private slotService: SlotService) {
+              private slotService: SlotService,
+              private userService: UserService) {
 
   }
 
@@ -29,6 +34,10 @@ export class PatientAppointmentsComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['id'])
         this.patientId = params['id']
+
+      this.userService.getUserById(this.patientId).subscribe(u => {
+        this.patient = u;
+      })
 
       this.appointmentService.getAppointmentsByPatientId(this.patientId).subscribe(data => {
         this.patientAppointments.appointments = data;
@@ -40,6 +49,15 @@ export class PatientAppointmentsComponent implements OnInit {
         })
       })
     });
+  }
 
+  getSlot(appointmentId: string) {
+    return this.patientAppointments.slots.get(appointmentId)
+      || {
+        id: '',
+        startsAt: new Date(),
+        doctorId: '',
+        reserved: true
+      };
   }
 }

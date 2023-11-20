@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AppointmentInterface, AppointmentRequest} from "../interfaces/appointment.interface";
-import {HttpClient, HttpParams, HttpStatusCode} from "@angular/common/http";
+import {HttpClient, HttpParams, HttpResponse, HttpStatusCode} from "@angular/common/http";
 import {delay, Observable} from "rxjs";
 
 @Injectable({
@@ -32,5 +32,19 @@ export class AppointmentService {
     const params = new HttpParams().set('patientId', patientId)
 
     return this.http.get<AppointmentInterface[]>(this.url, {params: params});
+  }
+
+  deleteAppointment(id: string) {
+    const deleteUrl = `${this.url}/${id}`;
+
+    this.http.delete<HttpResponse<any>>(deleteUrl).subscribe({
+      next: () => {
+      },
+      error: () => {
+      },
+      complete: () => {
+
+      }
+    })
   }
 }
