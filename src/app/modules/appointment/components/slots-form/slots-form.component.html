@@ -1,0 +1,69 @@
+<div class="slots-form">
+  <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+  <div *ngIf="displaySuccess" class="slots-form__row-success">
+    Successfully created slots !
+  </div>
+  <div *ngIf="displayError" class="slots-form__row-error">
+    Something went wrong:
+    <div *ngFor="let error of errors">{{error}}</div>
+  </div>
+  <form [formGroup]="slotsForm" [ngClass]="isLoading ? 'form-disabled' : ''" class="slots-form__form"
+        (ngSubmit)="onSubmit()">
+    <div class="slots-form__row">
+      <label class="slots-form__label" for="slotsInterval">Select start-end dates: </label>
+      <mat-form-field>
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate formControlName="startDate" placeholder="Start date">
+          <input matEndDate formControlName="endDate" placeholder="End date">
+        </mat-date-range-input>
+        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker touchUi #picker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+    <div class="slots-form__row">
+      <label class="slots-form__label" for="startTimePicker">Select start time: </label>
+      <input id="startTimePicker" [ngxTimepicker]="startTimePicker" [format]="24" formControlName="startTime"
+             class="slots-form__input">
+      <ngx-material-timepicker #startTimePicker></ngx-material-timepicker>
+      <span *ngIf="slotsForm.controls.slotsInterval.touched && slotsForm.controls.slotsInterval.invalid"
+            class="slots-form__error-message">Please add slots interval</span>
+    </div>
+    <div class="slots-form__row">
+      <label class="slots-form__label" for="endTimePicker">Select end time: </label>
+      <input id="endTimePicker" [ngxTimepicker]="endTimePicker" [format]="24" formControlName="endTime"
+             class="slots-form__input">
+      <ngx-material-timepicker #endTimePicker></ngx-material-timepicker>
+      <span *ngIf="slotsForm.controls.slotsInterval.touched && slotsForm.controls.slotsInterval.invalid"
+            class="slots-form__error-message">Please add slots interval</span>
+    </div>
+    <div class="slots-form__row">
+      <label class="slots-form__label" for="slotsInterval">Slots interval: </label>
+      <input class="slots-form__input" id="slotsInterval" type="number" formControlName="slotsInterval">
+      <span *ngIf="slotsForm.controls.slotsInterval.touched && slotsForm.controls.slotsInterval.invalid"
+            class="slots-form__error-message">Please add slots interval</span>
+    </div>
+    <div class="slots-form__row">
+      <div class="slots-form__label">Select days of the week:</div>
+      <mat-form-field>
+        <mat-label>Selected days</mat-label>
+        <mat-select (selectionChange)="onSelected($event)" multiple formControlName="selectedDays">
+          <mat-select-trigger>
+            <mat-chip-set>
+              <mat-chip *ngFor="let day of selectedDays">
+                {{ day }}
+              </mat-chip>
+            </mat-chip-set>
+          </mat-select-trigger>
+          <mat-option *ngFor="let day of allDays" [value]="day">
+            {{ day }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button type="submit" [disabled]="!slotsForm.valid || isLoading" class="slots-form__submit-button">
+      Submit
+    </button>
+  </form>
+</div>

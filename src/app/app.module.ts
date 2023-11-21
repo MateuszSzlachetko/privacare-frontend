@@ -12,6 +12,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {DeleteConfirmationComponent} from "./components/delete-confirmation/delete-confirmation.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import {MatButtonModule} from "@angular/material/button";
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

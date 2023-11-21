@@ -38,21 +38,20 @@ export class AppointmentComponent implements OnInit {
       case 'my-appointments': //todo auth service
         this.router.navigate(['appointment/patient/', this.patientId]).then();
         break;
+      case 'add-slots':
+        this.router.navigate(['appointment/slots/add']).then();
+        break;
       default:
         break;
     }
   }
 
   updateSelectedNavigation() {
-    switch (this.router.url.slice(13, 14)) {
-      case 's': // /appointment/(s)lots
-        this.routeValue = 'reserve';
-        break;
-      case 'p': // /appointment/(p)atient...
-        this.routeValue = 'my-appointments';
-        break;
-      default:
-        break;
-    }
+    if (this.router.url === '/appointment/slots')
+      this.routeValue = 'reserve';
+    if (this.router.url.slice(0, 20) === '/appointment/patient')
+      this.routeValue = 'my-appointments';
+    if (this.router.url === '/appointment/slots/add')
+      this.routeValue = 'add-slots';
   }
 }
