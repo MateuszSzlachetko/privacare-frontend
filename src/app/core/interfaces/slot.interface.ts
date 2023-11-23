@@ -7,7 +7,7 @@ export interface SlotInterface {
   reserved: boolean
 }
 
-export interface SlotRequest {
+export interface SlotsRequest {
   doctorId: string,
   startDate: string,
   endDate: string,

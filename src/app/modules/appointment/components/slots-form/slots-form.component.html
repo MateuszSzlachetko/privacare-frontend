@@ -21,28 +21,38 @@
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker touchUi #picker></mat-date-range-picker>
       </mat-form-field>
+      <span *ngIf="slotsForm.controls.startDate.touched &&
+                   slotsForm.controls.endDate.touched   &&
+                   slotsForm.errors?.['endBeforeStartDate']"
+            class="slots-form__error-message">Start date has to be before the end date</span>
     </div>
     <div class="slots-form__row">
       <label class="slots-form__label" for="startTimePicker">Select start time: </label>
       <input id="startTimePicker" [ngxTimepicker]="startTimePicker" [format]="24" formControlName="startTime"
              class="slots-form__input">
       <ngx-material-timepicker #startTimePicker></ngx-material-timepicker>
-      <span *ngIf="slotsForm.controls.slotsInterval.touched && slotsForm.controls.slotsInterval.invalid"
-            class="slots-form__error-message">Please add slots interval</span>
+      <span *ngIf="slotsForm.controls.startTime.touched &&
+                   slotsForm.controls.endTime.touched   &&
+                   slotsForm.errors?.['endBeforeStartTime']"
+            class="slots-form__error-message">Start time has to be before the end time</span>
     </div>
     <div class="slots-form__row">
       <label class="slots-form__label" for="endTimePicker">Select end time: </label>
       <input id="endTimePicker" [ngxTimepicker]="endTimePicker" [format]="24" formControlName="endTime"
              class="slots-form__input">
       <ngx-material-timepicker #endTimePicker></ngx-material-timepicker>
-      <span *ngIf="slotsForm.controls.slotsInterval.touched && slotsForm.controls.slotsInterval.invalid"
-            class="slots-form__error-message">Please add slots interval</span>
+      <span *ngIf="slotsForm.controls.startTime.touched &&
+                   slotsForm.controls.endTime.touched   &&
+                   slotsForm.errors?.['endBeforeStartTime']"
+            class="slots-form__error-message">End time has to be after the start time</span>
     </div>
     <div class="slots-form__row">
       <label class="slots-form__label" for="slotsInterval">Slots interval: </label>
       <input class="slots-form__input" id="slotsInterval" type="number" formControlName="slotsInterval">
-      <span *ngIf="slotsForm.controls.slotsInterval.touched && slotsForm.controls.slotsInterval.invalid"
-            class="slots-form__error-message">Please add slots interval</span>
+      <span *ngIf="slotsForm.controls.slotsInterval.touched &&
+                   slotsForm.controls.slotsInterval.invalid &&
+                   slotsForm.controls.slotsInterval.errors?.['intervalNonPositive']"
+            class="slots-form__error-message">Slots interval must be a positive integer</span>
     </div>
     <div class="slots-form__row">
       <div class="slots-form__label">Select days of the week:</div>
