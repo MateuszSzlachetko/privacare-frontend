@@ -34,6 +34,12 @@ export class AppointmentService {
     return this.http.get<AppointmentInterface[]>(this.url, {params: params});
   }
 
+  getAppointmentsBySlotId(slotId: string) {
+    const params = new HttpParams().set('slotId', slotId)
+
+    return this.http.get<AppointmentInterface>(this.url, {params: params});
+  }
+
   deleteAppointment(id: string) {
     const deleteUrl = `${this.url}/${id}`;
 

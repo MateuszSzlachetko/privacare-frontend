@@ -1,0 +1,74 @@
+<div class="doctor-appointment-panel">
+  <div class="grid-container" #gridContainer>
+    <button (click)="loadPreviousPage()" class="page-button">
+      <
+    </button>
+    <div class="grid" [@slideAnimations]="animationState"
+         (@slideAnimations.start)="onAnimationStart($event)"
+         (@slideAnimations.done)="onAnimationDone($event)">
+      <div class="grid-item" *ngFor="let dateKey of dateKeys">
+        <div class="date">
+          {{Date.parse(dateKey.toString()) | date:'EEEE, dd-MM-yyy'}}
+        </div>
+        <div class="slots">
+          <div class="test" *ngFor="let slot of getMapSlots(dateKey.toString())">
+            <button [ngClass]="['slot__button', slot.reserved ? 'reserved':'']" (click)="showPatientInfo(slot)">
+              {{slot.startsAt | date:'HH:mm'}}
+            </button>
+          </div>
+          <div *ngIf="getMapSlots(dateKey.toString())?.length === 0 || !getMapSlots(dateKey.toString())"
+               class="no-visits">
+            No visits
+          </div>
+        </div>
+      </div>
+    </div>
+    <button (click)="loadNextPage()" class="page-button">
+      >
+    </button>
+  </div>
+  <div class="appointment-info">
+    <h1>Selected appointment</h1>
+    <ng-container *ngIf="selectedSlot">
+      <div class="appointment-card__row-group">
+        <div class="appointment-card__date">
+          <span class="appointment-card__date-info">Date: </span>
+          {{selectedSlot.startsAt | date:'HH:mm  dd-MM-yyyy'}}
+        </div>
+        <div>
+          <img src="assets/dots.png" alt="dots menu" [matMenuTriggerFor]="menu"
+               class="appointment-card__menu-button">
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onDelete()">Delete</button>
+          </mat-menu>
+        </div>
+      </div>
+      <ng-container *ngIf="patientOfTheAppointment">
+        <div class="appointment-card__row-group">
+          <div class="appointment-card__name">
+            <span style="font-weight: 400;margin-right: 0.5rem;">Patient:</span>
+            {{patientOfTheAppointment.name}} {{patientOfTheAppointment.surname}}
+          </div>
+        </div>
+        <div class="appointment-card__row-group">
+          <div class="appointment-card__name">
+            <span style="font-weight: 400;margin-right: 0.5rem;">Phone number:</span>
+            {{patientOfTheAppointment.phoneNumber}}
+          </div>
+        </div>
+        <div class="appointment-card__row-group">
+          <div class="appointment-card__name">
+            <span style="font-weight: 400;margin-right: 0.5rem;">Pesel:</span>
+            {{patientOfTheAppointment.pesel}}
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container class="appointment-info__default-message" *ngIf="!selectedSlot">
+      <p class="appointment-info__default-message">
+        Please select reserved slot
+      </p>
+    </ng-container>
+  </div>
+</div>
+

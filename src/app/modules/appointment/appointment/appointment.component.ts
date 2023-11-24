@@ -10,6 +10,7 @@ import {BreakpointObserver} from "@angular/cdk/layout";
 })
 export class AppointmentComponent implements OnInit {
   patientId = '432b984b-3a3e-4078-af5d-c620bd3b9159';
+  doctorId = '9dbae116-3954-4a2c-9308-31fb971dc6fc';
   routeValue: string = 'reserve';
   verticalNavigation: boolean = false;
 
@@ -41,6 +42,9 @@ export class AppointmentComponent implements OnInit {
       case 'add-slots':
         this.router.navigate(['appointment/slots/add']).then();
         break;
+      case 'doctor-appointments': //todo auth service
+        this.router.navigate(['appointment/doctor/', this.doctorId]).then();
+        break;
       default:
         break;
     }
@@ -53,5 +57,7 @@ export class AppointmentComponent implements OnInit {
       this.routeValue = 'my-appointments';
     if (this.router.url === '/appointment/slots/add')
       this.routeValue = 'add-slots';
+    if (this.router.url.slice(0, 19) === '/appointment/doctor')
+      this.routeValue = 'doctor-appointments';
   }
 }

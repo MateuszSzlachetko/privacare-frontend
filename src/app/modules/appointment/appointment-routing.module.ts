@@ -5,11 +5,13 @@ import {SlotsComponent} from "./components/slots/slots.component";
 import {AppointmentFormComponent} from "./components/appointment-form/appointment-form.component";
 import {PatientAppointmentsComponent} from "./components/patient-appointments/patient-appointments.component";
 import {SlotsFormComponent} from "./components/slots-form/slots-form.component";
+import {DoctorAppointmentsComponent} from "./components/doctor-appointments/doctor-appointments.component";
 
 const routes: Routes = [
   {
     path: '', component: AppointmentComponent, children: [
       {path: 'patient/:id', component: PatientAppointmentsComponent},
+      {path: 'doctor/:id', component: DoctorAppointmentsComponent},
       {path: 'slots', component: SlotsComponent},
       {path: 'slots/reserve', component: AppointmentFormComponent},
       {path: 'slots/add', component: SlotsFormComponent}

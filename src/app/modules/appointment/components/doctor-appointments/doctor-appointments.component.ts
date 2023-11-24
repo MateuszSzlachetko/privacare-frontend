@@ -1,15 +1,21 @@
 import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {SlotService} from "../../../../core/services/slot.service";
-import {SlotInterface} from "../../../../core/interfaces/slot.interface";
-import {DatePipe} from "@angular/common";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {SlotInterface} from "../../../../core/interfaces/slot.interface";
+import {SlotService} from "../../../../core/services/slot.service";
 import {BreakpointObserver, BreakpointState} from "@angular/cdk/layout";
-import {Router} from "@angular/router";
+import {DatePipe} from "@angular/common";
+import {AppointmentInterface} from "../../../../core/interfaces/appointment.interface";
+import {AppointmentService} from "../../../../core/services/appointment.service";
+import {UserInterface} from "../../../../core/interfaces/user.interface";
+import {UserService} from "../../../../core/services/user.service";
+import {DeleteConfirmationComponent} from "../../../../components/delete-confirmation/delete-confirmation.component";
+import {MatDialog} from "@angular/material/dialog";
 
+//todo refactor in css, html, extract slots grid into separate component
 @Component({
-  selector: 'app-slots',
-  templateUrl: './slots.component.html',
-  styleUrls: ['./slots.component.scss'],
+  selector: 'app-doctor-appointments',
+  templateUrl: './doctor-appointments.component.html',
+  styleUrls: ['./doctor-appointments.component.scss'],
   animations: [
     trigger('slideAnimations', [
       state('init', style({
@@ -31,9 +37,7 @@ import {Router} from "@angular/router";
 
   ]
 })
-export class SlotsComponent implements OnInit {
-  //todo create efficient slots caching logic in the service, move functions from
-  //     the component
+export class DoctorAppointmentsComponent implements OnInit {
   slotsMap: Map<string, SlotInterface[]> = new Map();
   dateKeys: String[] = [];
   daysInRequest: number = 7;
@@ -41,19 +45,26 @@ export class SlotsComponent implements OnInit {
   animationState = 'init'
   protected readonly Date = Date;
   @ViewChild('gridContainer') gridContainer!: ElementRef;
+  appointment!: AppointmentInterface;
+  patientOfTheAppointment!: UserInterface;
+  selectedSlot!: SlotInterface;
 
 
   constructor(private slotService: SlotService,
+              private appointmentService: AppointmentService,
+              private userService: UserService,
               private breakpointObserver: BreakpointObserver,
               private renderer: Renderer2,
-              private router: Router) {
+              private dialog: MatDialog,) {
   }
 
   ngOnInit() {
-    this.breakpointObserver.observe(["(max-width: 425px)", "(max-width: 615px)", "(max-width: 850px)",]).subscribe((state: BreakpointState) => {
-      if (state.breakpoints['(max-width: 850px)'])
+    this.breakpointObserver.observe(["(max-width: 425px)", "(max-width: 690px)", "(max-width: 850px)", "(max-width: 1200px)"]).subscribe((state: BreakpointState) => {
+      if (state.breakpoints['(max-width: 1200px)'])
         this.daysInRequest = 5;
-      if (state.breakpoints['(max-width: 615px)'])
+      if (state.breakpoints['(max-width: 850px)'])
+        this.daysInRequest = 4;
+      if (state.breakpoints['(max-width: 690px)'])
         this.daysInRequest = 3;
       if (state.breakpoints['(max-width: 425px)'])
         this.daysInRequest = 2;
@@ -127,13 +138,25 @@ export class SlotsComponent implements OnInit {
     this.renderer.setStyle(this.gridContainer.nativeElement, 'overflow-x', 'auto');
   }
 
-  reserve(slot: SlotInterface) {
-    this.router.navigate(['appointment/slots/reserve'], {
-      queryParams: {
-        id: slot.id,
-        startsAt: slot.startsAt
-      }
-    }).then(r => {
+  showPatientInfo(slot: SlotInterface) {
+    this.appointmentService.getAppointmentsBySlotId(slot.id).subscribe(data => {
+      this.appointment = data;
+      this.userService.getUserById(data.patientId).subscribe(data => {
+        this.patientOfTheAppointment = data;
+      })
+      this.selectedSlot = slot;
+    })
+  }
+
+  onDelete() {
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      data: 'Are you sure you want to delete this note?',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm')
+        this.appointmentService.deleteAppointment(this.appointment.id);
     });
   }
 }
+

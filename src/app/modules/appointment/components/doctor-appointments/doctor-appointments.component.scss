@@ -1,0 +1,199 @@
+@import "src/styles";
+
+.grid-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex: 75%;
+}
+
+.doctor-appointment-panel {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.appointment-info {
+  flex: 25%;
+  border: solid 1px rgba(#000000, 0.2);
+  border-radius: 5px;
+  margin-right: 1rem;
+  background-color: #f4f4f4;
+  z-index: 1;
+  padding: 0.25rem 0.25rem;
+
+  h1 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.75rem;
+  }
+
+  .appointment-info__default-message {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 1.25rem;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  border-radius: 5px;
+  padding-left: 10px;
+  border: solid 1px rgba(#000000, 0.2);
+
+
+  @include custom-scrollbar();
+  max-height: 450px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar-track {
+    background: $background;
+  }
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #f4f4f4;
+  color: $text;
+  padding: 0 0.5rem 1rem;
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+}
+
+.date {
+  min-height: 80px;
+  position: sticky;
+  top: 0;
+  padding-top: 20px;
+  background-color: #f4f4f4;
+  font-weight: 700;
+}
+
+.page-button {
+  z-index: 1;
+  font-size: 2.25rem;
+  border-radius: 50%;
+  padding: 0 0.7rem;
+  color: $accent;
+  background-color: #f4f4f4;
+  border: solid 2px rgba($accent, 0.1);
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  cursor: pointer;
+  margin: 0 0.25rem;
+
+  &:hover {
+    background-color: rgba($accent, 0.75);
+    color: #f4f4f4;
+    border-color: rgba($accent, 0.8);
+  }
+}
+
+.slots {
+
+}
+
+.slot__button {
+  @include btn();
+  margin: 0.5rem;
+}
+
+.reserved {
+  background-color: #f4f4f4;
+  text-decoration: line-through;
+  color: $text;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f4f4f4;
+  }
+}
+
+.no-visits {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 350px;
+}
+
+
+.appointment-card__row-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.appointment-card__name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.appointment-card__date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: end;
+  font-size: 1rem;
+  color: $accent;
+}
+
+.appointment-card__date-info {
+  font-size: 1.25rem;
+  color: $text;
+  margin-bottom: 3px;
+  margin-right: 0.5rem;
+}
+
+.appointment-card__menu-button {
+  margin-left: 0.5rem;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+}
+
+mat-spinner {
+  margin-left: 5px;
+}
+
+@media only screen and (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media only screen and (max-width: 690px) {
+  .doctor-appointment-panel {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .appointment-info {
+    margin: 0 1rem 1rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
