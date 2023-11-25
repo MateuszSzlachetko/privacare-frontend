@@ -13,13 +13,20 @@ import {DeleteConfirmationComponent} from "./components/delete-confirmation/dele
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {MatNativeDateModule} from "@angular/material/core";
+import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
+import {getAuth, provideAuth} from '@angular/fire/auth';
+import {LogInComponent} from './components/auth/log-in/log-in.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {AuthComponent} from './components/auth/auth.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NavbarComponent,
-    DeleteConfirmationComponent
+    DeleteConfirmationComponent,
+    LogInComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +37,18 @@ import {MatNativeDateModule} from "@angular/material/core";
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    provideFirebaseApp(() => initializeApp({
+      "projectId": "privacare-86cc9",
+      "appId": "1:430629472922:web:75c996f7f45fe82f19ad23",
+      "storageBucket": "privacare-86cc9.appspot.com",
+      "apiKey": "AIzaSyAx0aF8MoLXezFDaAqyiSVucQNXYDAo33s",
+      "authDomain": "privacare-86cc9.firebaseapp.com",
+      "messagingSenderId": "430629472922",
+      "measurementId": "G-9B7ZCKFRX2"
+    })),
+    provideAuth(() => getAuth()),
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

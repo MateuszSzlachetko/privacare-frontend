@@ -1,0 +1,23 @@
+<mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()"
+      [ngClass]="isLoading ? 'form-disabled':''">
+  <label class="login-form__label" for="email">Email: </label>
+  <div class="login-form__row">
+    <input class="login-form__input" autocomplete="off" id="email" type="text" formControlName="email">
+  </div>
+  <div *ngIf="loginForm.controls.email.touched && loginForm.controls.email.invalid"
+       class="login-form__error-message">Please add email
+  </div>
+  <label class="login-form__label" for="password">Password: </label>
+  <div class="login-form__row">
+    <input class="login-form__input" autocomplete="off" id="password" type="text" formControlName="password">
+  </div>
+  <div *ngIf="loginForm.controls.password.touched && loginForm.controls.password.invalid"
+       class="login-form__error-message">Please add password
+  </div>
+  <div class="login-form__row">
+    <button type="submit" [disabled]="!loginForm.valid || isLoading" class="login-form__submit-button">
+      Submit
+    </button>
+  </div>
+</form>

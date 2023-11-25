@@ -1,0 +1,43 @@
+@import "src/styles";
+
+.login-form__row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.login-form__input {
+  width: 100%;
+  font-size: 1.5rem;
+  color: $text;
+  border: solid 2px rgba(#000000, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+
+  &:focus {
+    border: none;
+    outline: $primary solid 2px;
+    box-shadow: 5px 5px 10px rgba($primary, 0.3);
+  }
+}
+
+.login-form__label {
+  display: block;
+  align-self: flex-start;
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+  font-weight: bold;
+}
+
+.login-form__submit-button {
+  @include btn();
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+
+  &:disabled {
+    background-color: rgba(#3b3b3b, 0.4);
+    cursor: not-allowed;
+  }
+}

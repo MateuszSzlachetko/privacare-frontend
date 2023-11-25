@@ -18,6 +18,9 @@
     <a [routerLink]="['note']" class="navbar__link">
       Notes
     </a>
+    <a [routerLink]="['auth/login']" class="navbar__link">
+      Login
+    </a>
   </div>
   <button *ngIf="isDropdownAvailable" [disabled]="isAnimating" (click)="toggleDropdown()" class="navbar__button">
     <img src="assets/hamburger.png" alt="dropdown menu button"
@@ -44,5 +47,9 @@
   <a #note (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'note'"
      class="navbar__link">
     Notes
+  </a>
+  <a #login (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'auth/login'"
+     class="navbar__link">
+    Login
   </a>
 </div>
