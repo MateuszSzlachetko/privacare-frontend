@@ -1,13 +1,13 @@
 @import "src/styles";
 
-.login-form__row {
+.signup-form__row {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 
-.login-form__input {
+.signup-form__input {
   width: 100%;
   font-size: 1.5rem;
   color: $text;
@@ -22,7 +22,7 @@
   }
 }
 
-.login-form__label {
+.signup-form__label {
   display: block;
   align-self: flex-start;
   font-size: 1.5rem;
@@ -30,7 +30,7 @@
   font-weight: bold;
 }
 
-.login-form__sign-up {
+.signup-form__sign-up {
   font-size: 1rem;
   color: $text;
   cursor: pointer;
@@ -38,7 +38,7 @@
 
 }
 
-.login-form__submit-button {
+.signup-form__submit-button {
   @include btn();
   margin-top: 1rem;
   font-size: 1.5rem;

@@ -18,6 +18,7 @@ import {getAuth, provideAuth} from '@angular/fire/auth';
 import {LogInComponent} from './components/auth/log-in/log-in.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {AuthComponent} from './components/auth/auth.component';
+import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {AuthComponent} from './components/auth/auth.component';
     NavbarComponent,
     DeleteConfirmationComponent,
     LogInComponent,
-    AuthComponent
+    AuthComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,

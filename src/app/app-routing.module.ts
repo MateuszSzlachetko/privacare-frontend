@@ -3,12 +3,14 @@ import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./components/home/home.component";
 import {LogInComponent} from "./components/auth/log-in/log-in.component";
 import {AuthComponent} from "./components/auth/auth.component";
+import {SignUpComponent} from "./components/auth/sign-up/sign-up.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {
     path: 'auth', component: AuthComponent, children: [
-      {path: 'login', component: LogInComponent}
+      {path: 'login', component: LogInComponent},
+      {path: 'signup', component: SignUpComponent}
     ]
   },
   {path: 'news', loadChildren: () => import('./modules/news/news.module').then(m => m.NewsModule)},
