@@ -1,7 +1,8 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {UserInterface} from "../interfaces/user.interface";
 import {ReplaySubject} from "rxjs";
+import {Auth, user} from "@angular/fire/auth";
 
 interface User {
   user: UserInterface;
@@ -13,12 +14,28 @@ interface User {
 })
 export class UserService {
   url: string = '/api/users';
-  users: User[] = []
+  users: User[] = [];
+  auth = inject(Auth);
+  user$ = user(this.auth);
+  currentUser: UserInterface = this.getBlankUser();
+  currentUserId$ = new ReplaySubject<string>();
 
 
   constructor(private http: HttpClient) {
+    this.user$.subscribe(authUser => {
+      if (authUser === null) {
+        this.currentUser = this.getBlankUser();
+        this.currentUserId$.next(this.currentUser.id)
+        return;
+      }
+
+      this.fetchUserByAuthId(authUser.uid);
+    })
   }
 
+  getCurrentUserId() {
+    return this.currentUserId$.asObservable();
+  }
 
   getUsersByPeselFragment(peselFragment: string) {
     const params = new HttpParams().set('peselFragment', peselFragment);
@@ -60,5 +77,13 @@ export class UserService {
       pesel: '',
       phoneNumber: '',
     }
+  }
+
+  private fetchUserByAuthId(authId: string) {
+    const params = new HttpParams().set('authId', authId);
+    return this.http.get<UserInterface>(this.url, {params: params}).subscribe(data => {
+      this.currentUser = data;
+      this.currentUserId$.next(this.currentUser.id);
+    })
   }
 }

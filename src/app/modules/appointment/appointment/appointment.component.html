@@ -10,10 +10,10 @@
     <mat-button-toggle value="my-appointments" class="navigation-button">
       My appointments
     </mat-button-toggle>
-    <mat-button-toggle value="add-slots" class="navigation-button">
+    <mat-button-toggle *ngIf="(isAdmin$ | async)" value="add-slots" class="navigation-button">
       Add slots
     </mat-button-toggle>
-    <mat-button-toggle value="doctor-appointments" class="navigation-button">
+    <mat-button-toggle *ngIf="(isAdmin$ | async)" value="doctor-appointments" class="navigation-button">
       Doctor's appointments
     </mat-button-toggle>
   </mat-button-toggle-group>
