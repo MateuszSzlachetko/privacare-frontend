@@ -12,14 +12,14 @@
     <a [routerLink]="['appointment/slots']" class="navbar__link">
       Appointments
     </a>
-    <a [routerLink]="['task']" class="navbar__link">
+    <a *ngIf="(isAdmin$ | async)" [routerLink]="['task']" class="navbar__link">
       Tasks
     </a>
-    <a [routerLink]="['note']" class="navbar__link">
+    <a *ngIf="(isAdmin$ | async)" [routerLink]="['note']" class="navbar__link">
       Notes
     </a>
-    <a [routerLink]="['auth/login']" class="navbar__link">
-      Login
+    <a [routerLink]="[showLogin ? 'auth/login' : null]" (click)="!showLogin ? onLogout() : null" class="navbar__link">
+      {{showLogin ? 'Login' : 'Logout'}}
     </a>
   </div>
   <button *ngIf="isDropdownAvailable" [disabled]="isAnimating" (click)="toggleDropdown()" class="navbar__button">
@@ -40,16 +40,18 @@
      class="navbar__link">
     Appointments
   </a>
-  <a #task (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'task'"
+  <a *ngIf="showAdminLinks" #task (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'task'"
      class="navbar__link">
     Tasks
   </a>
-  <a #note (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'note'"
+  <a *ngIf="showAdminLinks" #note (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'note'"
      class="navbar__link">
     Notes
   </a>
-  <a #login (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'auth/login'"
+  <a #login (click)="showLogin ? toggleDropdown() : onLogoutMobile()"
+     [routerLink]="isAnimating || !showLogin ? null : 'auth/login'"
      class="navbar__link">
-    Login
+    {{showLogin ? 'Login' : 'Logout'}}
   </a>
 </div>
+

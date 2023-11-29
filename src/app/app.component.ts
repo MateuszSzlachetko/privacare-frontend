@@ -1,5 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {Auth, signInWithEmailAndPassword} from "@angular/fire/auth";
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,14 +7,4 @@ import {Auth, signInWithEmailAndPassword} from "@angular/fire/auth";
 })
 export class AppComponent {
   title = 'privacare';
-  // auth: Auth = inject(Auth);
-  //
-  // ngOnInit() {
-  //   signInWithEmailAndPassword(this.auth, '', '').then((u) => {
-  //     console.log(u.user.getIdTokenResult())
-  //     console.log(u.user.getIdTokenResult().then(t => {
-  //       console.log(t.claims['isAdmin'])
-  //     }))
-  //   })
-  // }
 }

@@ -6,11 +6,12 @@ import {AppointmentFormComponent} from "./components/appointment-form/appointmen
 import {PatientAppointmentsComponent} from "./components/patient-appointments/patient-appointments.component";
 import {SlotsFormComponent} from "./components/slots-form/slots-form.component";
 import {DoctorAppointmentsComponent} from "./components/doctor-appointments/doctor-appointments.component";
+import {authGuard} from "../../core/guards/auth.guard";
 
 const routes: Routes = [
   {
     path: '', component: AppointmentComponent, children: [
-      {path: 'patient/:id', component: PatientAppointmentsComponent},
+      {path: 'patient/:id', component: PatientAppointmentsComponent, canActivate: [authGuard]},
       {path: 'doctor/:id', component: DoctorAppointmentsComponent},
       {path: 'slots', component: SlotsComponent},
       {path: 'slots/reserve', component: AppointmentFormComponent},

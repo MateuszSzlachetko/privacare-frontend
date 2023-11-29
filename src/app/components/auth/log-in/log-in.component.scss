@@ -50,13 +50,13 @@
   }
 }
 
-.signup-form__error-message,
-.signup__auth-error {
+.login-form__error-message,
+.login__auth-error {
   color: $error;
   text-align: center;
 }
 
-.signup__auth-success {
+.login__auth-success {
   color: $primary;
   text-align: center;
 }

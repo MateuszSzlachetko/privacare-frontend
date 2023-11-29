@@ -1,6 +1,10 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {BreakpointObserver, BreakpointState} from "@angular/cdk/layout";
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {Auth, signOut, user} from "@angular/fire/auth";
+import {Router} from "@angular/router";
+import {isAdmin} from "../../core/guards/admin.guard";
+import {isLoggedIn} from "../../core/guards/auth.guard";
 
 const InOutAnimation = trigger('InOutAnimation', [
   state(
@@ -24,6 +28,12 @@ export class NavbarComponent implements OnInit {
   showDropdown: boolean = false;
   isDropdownAvailable: boolean = false;
   isAnimating: boolean = false;
+  auth = inject(Auth);
+  user$ = user(this.auth);
+  showLogin: boolean = false;
+  showAdminLinks: boolean = false;
+  isAdmin$ = isAdmin();
+  isLoggedIn$ = isLoggedIn();
 
   @ViewChild('news') newsLink!: ElementRef;
   @ViewChild('task') tasksLink!: ElementRef;
@@ -31,7 +41,7 @@ export class NavbarComponent implements OnInit {
   @ViewChild('appointment') appointmentsLink!: ElementRef;
   @ViewChild('login') loginLink!: ElementRef;
 
-  constructor(private breakpointObserver: BreakpointObserver, private renderer: Renderer2) {
+  constructor(private breakpointObserver: BreakpointObserver, private renderer: Renderer2, private router: Router) {
   }
 
   ngOnInit() {
@@ -41,6 +51,14 @@ export class NavbarComponent implements OnInit {
       if (!result.matches)
         this.showDropdown = false;
     });
+
+    this.isLoggedIn$.subscribe(value => {
+      this.showLogin = !value;
+    })
+
+    this.isAdmin$.subscribe(value => {
+      this.showAdminLinks = value;
+    })
   }
 
   toggleDropdown() {
@@ -71,9 +89,21 @@ export class NavbarComponent implements OnInit {
   // the dropdown menu
   private preventRoutingOnOutAnimation() {
     this.renderer.setStyle(this.newsLink.nativeElement, 'pointer-events', 'none');
-    this.renderer.setStyle(this.tasksLink.nativeElement, 'pointer-events', 'none');
-    this.renderer.setStyle(this.notesLink.nativeElement, 'pointer-events', 'none');
+    if (this.tasksLink)
+      this.renderer.setStyle(this.tasksLink.nativeElement, 'pointer-events', 'none');
+    if (this.notesLink)
+      this.renderer.setStyle(this.notesLink.nativeElement, 'pointer-events', 'none');
     this.renderer.setStyle(this.appointmentsLink.nativeElement, 'pointer-events', 'none');
     this.renderer.setStyle(this.loginLink.nativeElement, 'pointer-events', 'none');
+  }
+
+  onLogout() {
+    signOut(this.auth).then(
+      () => this.router.navigateByUrl('/'));
+  }
+
+  onLogoutMobile() {
+    this.toggleDropdown();
+    this.onLogout();
   }
 }
