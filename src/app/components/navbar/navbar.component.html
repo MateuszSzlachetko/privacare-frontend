@@ -18,6 +18,9 @@
     <a *ngIf="(isAdmin$ | async)" [routerLink]="['note']" class="navbar__link">
       Notes
     </a>
+    <a *ngIf="(isLoggedIn$ | async)" [routerLink]="['user']" class="navbar__link">
+      Profile
+    </a>
     <a [routerLink]="[showLogin ? 'auth/login' : null]" (click)="!showLogin ? onLogout() : null" class="navbar__link">
       {{showLogin ? 'Login' : 'Logout'}}
     </a>
@@ -47,6 +50,10 @@
   <a *ngIf="showAdminLinks" #note (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'note'"
      class="navbar__link">
     Notes
+  </a>
+  <a *ngIf="!showLogin" #user (click)="toggleDropdown()" [routerLink]="isAnimating ? null : 'user'"
+     class="navbar__link">
+    Profile
   </a>
   <a #login (click)="showLogin ? toggleDropdown() : onLogoutMobile()"
      [routerLink]="isAnimating || !showLogin ? null : 'auth/login'"

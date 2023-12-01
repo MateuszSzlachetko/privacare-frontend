@@ -7,3 +7,11 @@ export interface UserInterface {
   pesel: string,
   phoneNumber: string,
 }
+
+export interface UserRequest {
+  authId?: string,
+  name: string,
+  surname: string,
+  pesel: string,
+  phoneNumber: string,
+}

@@ -33,8 +33,8 @@ export class AppointmentComponent implements OnInit {
       this.verticalNavigation = state.matches;
     })
 
-    this.userService.getCurrentUserId().subscribe(id => {
-      this.patientId = id;
+    this.userService.getCurrentUser().subscribe(user => {
+      this.patientId = user.id;
     })
   }
 

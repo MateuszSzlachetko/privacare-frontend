@@ -39,6 +39,7 @@ export class NavbarComponent implements OnInit {
   @ViewChild('task') tasksLink!: ElementRef;
   @ViewChild('note') notesLink!: ElementRef;
   @ViewChild('appointment') appointmentsLink!: ElementRef;
+  @ViewChild('user') userLink!: ElementRef;
   @ViewChild('login') loginLink!: ElementRef;
 
   constructor(private breakpointObserver: BreakpointObserver, private renderer: Renderer2, private router: Router) {
@@ -94,6 +95,8 @@ export class NavbarComponent implements OnInit {
     if (this.notesLink)
       this.renderer.setStyle(this.notesLink.nativeElement, 'pointer-events', 'none');
     this.renderer.setStyle(this.appointmentsLink.nativeElement, 'pointer-events', 'none');
+    if (!this.showLogin)
+      this.renderer.setStyle(this.userLink.nativeElement, 'pointer-events', 'none');
     this.renderer.setStyle(this.loginLink.nativeElement, 'pointer-events', 'none');
   }
 

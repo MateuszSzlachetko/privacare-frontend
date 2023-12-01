@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {UserInterface} from "../interfaces/user.interface";
-import {ReplaySubject} from "rxjs";
+import {HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode} from "@angular/common/http";
+import {UserInterface, UserRequest} from "../interfaces/user.interface";
+import {map, Observable, ReplaySubject} from "rxjs";
 import {Auth, user} from "@angular/fire/auth";
 
 interface User {
@@ -18,14 +18,14 @@ export class UserService {
   auth = inject(Auth);
   user$ = user(this.auth);
   currentUser: UserInterface = this.getBlankUser();
-  currentUserId$ = new ReplaySubject<string>();
+  currentUser$ = new ReplaySubject<UserInterface>();
 
 
   constructor(private http: HttpClient) {
     this.user$.subscribe(authUser => {
       if (authUser === null) {
         this.currentUser = this.getBlankUser();
-        this.currentUserId$.next(this.currentUser.id)
+        this.currentUser$.next(this.currentUser)
         return;
       }
 
@@ -33,8 +33,14 @@ export class UserService {
     })
   }
 
-  getCurrentUserId() {
-    return this.currentUserId$.asObservable();
+  getCurrentUser() {
+    return this.currentUser$.asObservable();
+  }
+
+  getCurrentUserAuthId() {
+    return this.user$.pipe(
+      map(user => user?.uid || ''),
+    )
   }
 
   getUsersByPeselFragment(peselFragment: string) {
@@ -83,7 +89,24 @@ export class UserService {
     const params = new HttpParams().set('authId', authId);
     return this.http.get<UserInterface>(this.url, {params: params}).subscribe(data => {
       this.currentUser = data;
-      this.currentUserId$.next(this.currentUser.id);
+      this.currentUser$.next(this.currentUser);
     })
+  }
+
+  addUser(userRequest: UserRequest) {
+    return new Observable<{ status: HttpStatusCode, messages: string[] }>((observer) => {
+      this.http.post<UserInterface>(this.url, userRequest).subscribe({
+        next: (response: UserInterface) => {
+          observer.next({status: HttpStatusCode.Created, messages: []})
+        },
+        error: (error: HttpErrorResponse) => {
+          observer.next({status: HttpStatusCode.BadRequest, messages: [...error.error.messages]})
+        },
+        complete: () => {
+          observer.complete()
+        }
+      });
+    });
+
   }
 }

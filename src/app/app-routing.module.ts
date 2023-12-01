@@ -5,6 +5,7 @@ import {LogInComponent} from "./components/auth/log-in/log-in.component";
 import {AuthComponent} from "./components/auth/auth.component";
 import {SignUpComponent} from "./components/auth/sign-up/sign-up.component";
 import {adminGuard} from "./core/guards/admin.guard";
+import {authGuard} from "./core/guards/auth.guard";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -30,6 +31,11 @@ const routes: Routes = [
   {
     path: 'appointment',
     loadChildren: () => import('./modules/appointment/appointment.module').then(m => m.AppointmentModule)
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule),
+    canActivate: [authGuard],
   },
   {path: '**', redirectTo: ''}
 ];
