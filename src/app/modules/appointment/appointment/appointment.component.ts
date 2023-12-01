@@ -45,7 +45,7 @@ export class AppointmentComponent implements OnInit {
         break;
       case 'my-appointments':
         if (this.patientId === '') {
-          this.router.navigate(['']).then(); //redirect to profile page to create user data
+          this.router.navigate(['user']).then(); //redirect to profile page to create user data
           break;
         }
         this.router.navigate(['appointment/patient/', this.patientId]).then();

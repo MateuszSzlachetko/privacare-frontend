@@ -35,10 +35,9 @@ export class AppointmentFormComponent implements OnInit {
       .subscribe(user => {
         this.doctor = user
       })
-    this.userService.getUserById('432b984b-3a3e-4078-af5d-c620bd3b9159')
-      .subscribe(user => {
-        this.patient = user
-      })
+    this.userService.getCurrentUser().subscribe(user => {
+      this.patient = user;
+    })
 
     this.route.queryParams.subscribe(params => {
       if (params['id'])
@@ -57,8 +56,8 @@ export class AppointmentFormComponent implements OnInit {
 
     // todo auth service and patient adding by doctor
     const appointmentRequest: AppointmentRequest = {
-      creatorId: '9dbae116-3954-4a2c-9308-31fb971dc6fc',
-      patientId: '432b984b-3a3e-4078-af5d-c620bd3b9159',
+      creatorId: this.patient.id,
+      patientId: this.patient.id,
       slotId: this.slotId,
     };
     this.addAppointment(appointmentRequest);

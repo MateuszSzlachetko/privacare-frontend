@@ -150,7 +150,7 @@ export class DoctorAppointmentsComponent implements OnInit {
 
   onDelete() {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-      data: 'Are you sure you want to delete this note?',
+      data: 'Are you sure you want to delete this appointment?',
     });
 
     dialogRef.afterClosed().subscribe((result) => {

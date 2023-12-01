@@ -98,6 +98,7 @@ export class UserService {
       this.http.post<UserInterface>(this.url, userRequest).subscribe({
         next: (response: UserInterface) => {
           observer.next({status: HttpStatusCode.Created, messages: []})
+          this.fetchUserByAuthId(response.authId);
         },
         error: (error: HttpErrorResponse) => {
           observer.next({status: HttpStatusCode.BadRequest, messages: [...error.error.messages]})
