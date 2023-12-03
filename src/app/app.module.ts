@@ -4,7 +4,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './components/home/home.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {NgOptimizedImage} from "@angular/common";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -18,7 +18,8 @@ import {getAuth, provideAuth} from '@angular/fire/auth';
 import {LogInComponent} from './components/auth/log-in/log-in.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {AuthComponent} from './components/auth/auth.component';
-import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
+import {SignUpComponent} from './components/auth/sign-up/sign-up.component';
+import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
     MatDialogModule,
     MatButtonModule,
     MatNativeDateModule,
-    provideFirebaseApp(() => initializeApp({
+    provideFirebaseApp(() => initializeApp({ //todo to external file, clear app because of github commit
       "projectId": "privacare-86cc9",
       "appId": "1:430629472922:web:75c996f7f45fe82f19ad23",
       "storageBucket": "privacare-86cc9.appspot.com",
@@ -52,7 +53,13 @@ import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
     provideAuth(() => getAuth()),
     MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
