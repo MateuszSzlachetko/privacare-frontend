@@ -4,6 +4,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../../../../components/delete-confirmation/delete-confirmation.component";
 import {NewsService} from "../../../../core/services/news.service";
 import {Router} from "@angular/router";
+import {isAdmin} from "../../../../core/guards/admin.guard";
 
 @Component({
   selector: 'app-news-card',
@@ -14,6 +15,7 @@ export class NewsCardComponent {
   @Input({required: true}) news!: NewsInterface;
   contentLengthThreshold: number = 50;
   seeMore: boolean = false;
+  isAdmin$ = isAdmin();
 
   constructor(private dialog: MatDialog,
               private newsService: NewsService,

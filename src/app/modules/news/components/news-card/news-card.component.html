@@ -6,12 +6,14 @@
       </div>
       <div class="news-card__date">
         {{news.createdAt | date: 'dd/MM/yyyy - HH:mm'}}
-        <img src="assets/dots.png" alt="dots menu" [matMenuTriggerFor]="menu"
-             class="news-card__menu-button">
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="onEdit()">Edit</button>
-          <button mat-menu-item (click)="onDelete()">Delete</button>
-        </mat-menu>
+        <div *ngIf="(isAdmin$ | async)">
+          <img src="assets/dots.png" alt="dots menu" [matMenuTriggerFor]="menu"
+               class="news-card__menu-button">
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onEdit()">Edit</button>
+            <button mat-menu-item (click)="onDelete()">Delete</button>
+          </mat-menu>
+        </div>
       </div>
     </div>
     <div class="news-card__title">

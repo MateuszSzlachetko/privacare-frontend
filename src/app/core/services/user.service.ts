@@ -1,7 +1,8 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {UserInterface} from "../interfaces/user.interface";
-import {ReplaySubject} from "rxjs";
+import {inject, Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode} from "@angular/common/http";
+import {UserInterface, UserRequest} from "../interfaces/user.interface";
+import {map, Observable, ReplaySubject} from "rxjs";
+import {Auth, user} from "@angular/fire/auth";
 
 interface User {
   user: UserInterface;
@@ -13,12 +14,34 @@ interface User {
 })
 export class UserService {
   url: string = '/api/users';
-  users: User[] = []
+  users: User[] = [];
+  auth = inject(Auth);
+  user$ = user(this.auth);
+  currentUser: UserInterface = this.getBlankUser();
+  currentUser$ = new ReplaySubject<UserInterface>();
 
 
   constructor(private http: HttpClient) {
+    this.user$.subscribe(authUser => {
+      if (authUser === null) {
+        this.currentUser = this.getBlankUser();
+        this.currentUser$.next(this.currentUser)
+        return;
+      }
+
+      this.fetchUserByAuthId(authUser.uid);
+    })
   }
 
+  getCurrentUser() {
+    return this.currentUser$.asObservable();
+  }
+
+  getCurrentUserAuthId() {
+    return this.user$.pipe(
+      map(user => user?.uid || ''),
+    )
+  }
 
   getUsersByPeselFragment(peselFragment: string) {
     const params = new HttpParams().set('peselFragment', peselFragment);
@@ -60,5 +83,31 @@ export class UserService {
       pesel: '',
       phoneNumber: '',
     }
+  }
+
+  private fetchUserByAuthId(authId: string) {
+    const params = new HttpParams().set('authId', authId);
+    return this.http.get<UserInterface>(this.url, {params: params}).subscribe(data => {
+      this.currentUser = data;
+      this.currentUser$.next(this.currentUser);
+    })
+  }
+
+  addUser(userRequest: UserRequest) {
+    return new Observable<{ status: HttpStatusCode, messages: string[] }>((observer) => {
+      this.http.post<UserInterface>(this.url, userRequest).subscribe({
+        next: (response: UserInterface) => {
+          observer.next({status: HttpStatusCode.Created, messages: []})
+          this.fetchUserByAuthId(response.authId);
+        },
+        error: (error: HttpErrorResponse) => {
+          observer.next({status: HttpStatusCode.BadRequest, messages: [...error.error.messages]})
+        },
+        complete: () => {
+          observer.complete()
+        }
+      });
+    });
+
   }
 }

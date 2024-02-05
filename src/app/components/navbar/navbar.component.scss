@@ -25,6 +25,7 @@
 
 .navbar__link-group--dropdown {
   flex-direction: column;
+  overflow-y: hidden;
 
   & > .navbar__link {
     display: block;
@@ -63,3 +64,20 @@
     background: $background;
   }
 }
+
+//
+//@keyframes example {
+//  from {
+//    max-height: 0;
+//  }
+//  to {
+//    max-height: 500px;
+//  }
+//}
+//
+//.navbar__link-group--dropdown {
+//  animation-name: example;
+//  animation-timing-function: ease-in-out;
+//  animation-duration: 2s;
+//  overflow: hidden;
+//}

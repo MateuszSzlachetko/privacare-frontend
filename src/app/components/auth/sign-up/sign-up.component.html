@@ -1,0 +1,35 @@
+<mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+<div *ngIf="error" class="signup__auth-error">
+  {{error}}
+</div>
+<div *ngIf="success" class="signup__auth-success">
+  {{success}}
+</div>
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()"
+      [ngClass]="isLoading ? 'form-disabled':''">
+  <label class="signup-form__label" for="email">Email: </label>
+  <div class="signup-form__row">
+    <input class="signup-form__input" autocomplete="off" id="email" type="text" formControlName="email">
+  </div>
+  <div *ngIf="signupForm.controls.email.touched && signupForm.controls.email.invalid"
+       class="signup-form__error-message">Please add email
+  </div>
+  <label class="signup-form__label" for="password">Password: </label>
+  <div class="signup-form__row">
+    <input class="signup-form__input" autocomplete="off" id="password" [type]="showPassword ? 'text' : 'password'"
+           formControlName="password">
+  </div>
+  <div *ngIf="signupForm.controls.password.touched && signupForm.controls.password.invalid"
+       class="signup-form__error-message">Please add password
+  </div>
+  <div class="signup-form__row">
+    <a [routerLink]="['/auth/login']" class="signup-form__sign-up">
+      You already have an account? Log in
+    </a>
+  </div>
+  <div class="signup-form__row">
+    <button type="submit" [disabled]="!signupForm.valid || isLoading" class="signup-form__submit-button">
+      Sign up
+    </button>
+  </div>
+</form>

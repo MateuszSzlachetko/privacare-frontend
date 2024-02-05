@@ -2,7 +2,7 @@
   <mat-spinner diameter="50"></mat-spinner>
 </div>
 <ng-container *ngIf="!isLoading">
-  <div class="news__row">
+  <div *ngIf="(isAdmin$ | async)" class="news__row">
     <button class="news__add-button" [routerLink]="['add']">Add <span style="font-size: 1.5rem">+</span></button>
   </div>
   <app-news-card *ngFor="let n of news" [news]="n"></app-news-card>

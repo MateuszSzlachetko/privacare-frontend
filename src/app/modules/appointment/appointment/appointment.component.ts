@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
 import {filter} from "rxjs";
 import {BreakpointObserver} from "@angular/cdk/layout";
+import {isAdmin} from "../../../core/guards/admin.guard";
+import {UserService} from "../../../core/services/user.service";
 
 @Component({
   selector: 'app-appointment',
@@ -9,12 +11,13 @@ import {BreakpointObserver} from "@angular/cdk/layout";
   styleUrls: ['./appointment.component.scss']
 })
 export class AppointmentComponent implements OnInit {
-  patientId = '432b984b-3a3e-4078-af5d-c620bd3b9159';
+  patientId = '';
   doctorId = '9dbae116-3954-4a2c-9308-31fb971dc6fc';
   routeValue: string = 'reserve';
   verticalNavigation: boolean = false;
+  isAdmin$ = isAdmin();
 
-  constructor(private router: Router, private breakpointObserver: BreakpointObserver) {
+  constructor(private router: Router, private breakpointObserver: BreakpointObserver, private userService: UserService) {
   }
 
   ngOnInit() {
@@ -29,6 +32,10 @@ export class AppointmentComponent implements OnInit {
     this.breakpointObserver.observe(["(max-width: 520px)"]).subscribe(state => {
       this.verticalNavigation = state.matches;
     })
+
+    this.userService.getCurrentUser().subscribe(user => {
+      this.patientId = user.id;
+    })
   }
 
   onNavigationChange(value: string) {
@@ -36,7 +43,11 @@ export class AppointmentComponent implements OnInit {
       case 'reserve':
         this.router.navigate(['appointment/slots']).then();
         break;
-      case 'my-appointments': //todo auth service
+      case 'my-appointments':
+        if (this.patientId === '') {
+          this.router.navigate(['user']).then(); //redirect to profile page to create user data
+          break;
+        }
         this.router.navigate(['appointment/patient/', this.patientId]).then();
         break;
       case 'add-slots':

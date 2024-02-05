@@ -3,6 +3,7 @@ import {NewsInterface} from "../../../core/interfaces/news.interface";
 import {NewsService} from "../../../core/services/news.service";
 import {PageEvent} from "@angular/material/paginator";
 import {Subject, takeUntil} from "rxjs";
+import {isAdmin} from "../../../core/guards/admin.guard";
 
 @Component({
   selector: 'app-news',
@@ -16,6 +17,7 @@ export class NewsComponent implements OnInit, OnDestroy {
   pageIndex: number = 0;
   isLoading: boolean = false;
   destroy$: Subject<void> = new Subject();
+  isAdmin$ = isAdmin();
 
   constructor(private newsService: NewsService) {
   }

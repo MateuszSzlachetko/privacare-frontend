@@ -1,0 +1,34 @@
+<div class="user-form">
+  <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+  <div *ngIf="displaySuccess" class="user-form__row-success">
+    Successfully updated profile !
+  </div>
+  <div *ngIf="displayError" class="user-form__row-error">
+    Something went wrong:
+    <div *ngFor="let error of errors">{{error}}</div>
+  </div>
+  <form [formGroup]="userForm" [ngClass]="isLoading ? 'form-disabled' : ''" class="user-form__form"
+        (ngSubmit)="onSubmit()">
+    <div class="user-form__row">
+      <label class="user-form__label" for="name">Name: </label>
+      <input class="user-form__input" id="name" type="text" formControlName="name">
+    </div>
+    <div class="user-form__row">
+      <label class="user-form__label" for="surname">Surname: </label>
+      <input class="user-form__input" id="surname" type="text" formControlName="surname">
+    </div>
+    <div class="user-form__row">
+      <label class="user-form__label" for="pesel">Pesel: </label>
+      <input class="user-form__input" id="pesel" type="number" formControlName="pesel">
+    </div>
+    <div class="user-form__row">
+      <label class="user-form__label" for="phoneNumber">Phone number: </label>
+      <input class="user-form__input" id="phoneNumber" type="text" formControlName="phoneNumber">
+    </div>
+
+    <button *ngIf="currentUser.id ===''" type="submit" [disabled]="!userForm.valid || isLoading"
+            class="user-form__submit-button">
+      Submit
+    </button>
+  </form>
+</div>
