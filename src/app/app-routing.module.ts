@@ -15,13 +15,19 @@ const routes: Routes = [
       {path: 'signup', component: SignUpComponent}
     ]
   },
-  {path: 'news', loadChildren: () => import('./modules/news/news.module').then(m => m.NewsModule)},
+  {
+    path: 'user',
+    loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule),
+    canActivate: [authGuard],
+  },
   {
     path: 'task',
     loadChildren: () => import('./modules/task/task.module').then(m => m.TaskModule),
     canActivate: [adminGuard],
     canMatch: [adminGuard]
   },
+  {path: 'news', loadChildren: () => import('./modules/news/news.module').then(m => m.NewsModule)},
+
   {
     path: 'note',
     loadChildren: () => import('./modules/note/note.module').then(m => m.NoteModule),
@@ -32,11 +38,7 @@ const routes: Routes = [
     path: 'appointment',
     loadChildren: () => import('./modules/appointment/appointment.module').then(m => m.AppointmentModule)
   },
-  {
-    path: 'user',
-    loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule),
-    canActivate: [authGuard],
-  },
+
   {path: '**', redirectTo: ''}
 ];
 

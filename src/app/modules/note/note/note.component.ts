@@ -14,7 +14,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./note.component.scss']
 })
 export class NoteComponent implements OnInit {
-  myControl = new FormControl('');
+  searchControl = new FormControl('');
   users: UserInterface[] = [];
   notes!: NoteInterface[];
   selectedPatient!: UserInterface;
@@ -38,21 +38,21 @@ export class NoteComponent implements OnInit {
         this.userService.getUserById(id).subscribe(user => {
           this.users.push(user);
           this.selectedPatient = user;
-          this.myControl.setValue(`${user.name} ${user.surname} ${user.pesel}`)
+          this.searchControl.setValue(`${user.name} ${user.surname} ${user.pesel}`)
         })
       }
 
       if (!params['patientId']) {
-        this.myControl.reset('');
+        this.searchControl.reset('');
       }
     });
 
-    this.myControl.valueChanges.subscribe(value => {
+    this.searchControl.valueChanges.subscribe(value => {
       if (value === '')
         this.router.navigate(['/note']).then();
     })
 
-    this.myControl.valueChanges.pipe(debounceTime(300)).subscribe(value => {
+    this.searchControl.valueChanges.pipe(debounceTime(300)).subscribe(value => {
       this.getUsers(value || '');
     })
   }
@@ -79,7 +79,7 @@ export class NoteComponent implements OnInit {
       })
   }
 
-  getUsers(peselFragment: string) {
+  getUsers(peselFragment: string): void {
     if (!this.isDigitsOnly(peselFragment))
       return;
 
@@ -89,8 +89,8 @@ export class NoteComponent implements OnInit {
       })
   }
 
-  private isDigitsOnly(value: string | null) {
+  private isDigitsOnly(value: string): boolean {
     const regex = /^[0-9]+$/;
-    return regex.test(value || '');
+    return regex.test(value);
   }
 }

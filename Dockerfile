@@ -10,7 +10,6 @@ RUN npm install
 COPY . .
 RUN ng build --aot --optimization
 
-# run with nginx
 FROM nginx
 
 RUN rm /etc/nginx/conf.d/default.conf
